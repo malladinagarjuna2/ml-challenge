@@ -1,0 +1,12 @@
+# data, caches and large outputs stay on disk only (competition data must not be published)
+cache/
+data/
+output/
+output_dev/
+submission/output/
+*.zip
+*.parquet
+*.tsv
+!runs/**/metrics.json
+__pycache__/
+.ipynb_checkpoints/

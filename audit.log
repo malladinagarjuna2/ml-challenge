@@ -1,0 +1,68 @@
+sample: 100,000 S1 entities, 346,479 true pairs
+
+=== CLAIM 5: states disagree in ~2.4% of true pairs; why? ===
+disagree: 7,276/317,213 = 2.29%
+   ('us', 'od', 'or'): 2101
+   ('us', 'uk', 'ut'): 1657
+   ('india', 'tg', 'ap'): 1529
+   ('us', 'wa', 'dc'): 532
+   ('us', 'ks', 'mo'): 264
+   ('us', 'wa', 'ma'): 47
+   ('india', 'hr', 'dl'): 40
+   ('us', 'wa', 'nc'): 40
+   ('us', 'wa', 'va'): 37
+   ('us', 'az', 'wa'): 36
+   ('us', 'co', 'ut'): 34
+   ('india', 'up', 'dl'): 32
+   S1 '2905 Rittenhouse Street, Washington, DC'
+      -> '905 Rittenhouse Saint, N/A, Washinton, District of Columbia'
+   S1 '7915 Ames Avenue, Kansas City, MO'
+      -> '7915 Ames Avenue, Kansas City, Missouri'
+   S1 'Plot No.150, Road No.10 Jubulee Hills, Hyderabad, Telangana'
+      -> 'PLOT NO.150, ROAD NO.10 JUBULEE HILLS, HYDERABAD, Andhra Pradesh'
+   S1 'Plot No.150, Road No.10 Jubulee Hills, Hyderabad, Telangana'
+      -> '150 , ROAD NO.10 JUBULEE HILLS, Andhra Pradesh'
+   S1 'Plot No.150, Road No.10 Jubulee Hills, Hyderabad, Telangana'
+      -> 'PLOT NO.150, ROAD NO.10 JUBULEE HILLS, Andhra Pradesh'
+   S1 '6311 Meier Drive, Taylorsville City, UT'
+      -> 'Taylorsville City, 6311 Meer Dr, Utah'
+
+=== CLAIM 2: stripping 'delhi' / 'st'->'street' — does it hurt? ===
+   Delhi (India): 19,162 true pairs, cleaned addr empty 0.00%, addr sim 92.2 (all pairs 92.4)
+   'St ' + city-like (US): 1,813 true pairs, cleaned addr empty 0.00%, addr sim 91.9 (all pairs 92.4)
+   '206 & 207, Vardhman Taru Plaza Plot No 4, Cu Block Lsc, Pitampura, New Delhi, North West, Delhi' -> '206 and 207 vardhman taru plaza 4 cu block lsc pitampura north west'
+   'Delhi, South West Delhi, 22 Green Medow Farm Village Satbari' -> 'south west 22 green medow farm village satbari'
+   'H.No-152, 1St Flr G No.3/A, Meethapur Extn, New Delhi, South Delhi, Delhi' -> '-152 1 floor g 3/a meethapur extension south'
+   'H. No.-141, First Floor, Village Chilla, Mayur Vihar, Phase-I, East Delhi, Delhi' -> '141 first floor village chilla mayur vihar phase i east'
+   'Unit S-8, Lsc-1, Tsl Plaza Plot No-3, Sector-4 Dwarka, Delhi, South West Delhi, Delhi' -> 's-8 lsc-1 tsl plaza -3 sector-4 dwarka south west'
+
+=== CLAIM 3: which token substitutions do true pairs contain that the hand lists miss? ===
+   top addr substitutions (S1 token -> S2/S3 token):
+      howrah->pscimbng:249, cove->cv:99, calcutta->pscimbng:88, chennai->tmilnatu:68, gurgaon->hriyana:62, street->stret:55, ernakulam->keralam:50, road->rad:49, road->rod:48, atlanta->atl:47, road->roda:44, road->raod:41, point->pt:35, crossing->xing:35, joliet->incorporated:34, phoenix->maryvale:34, ridge->rdg:33, ernakulam->kerlm:33, city->suburban:32, fairfax->alexandria:32, malapuram->keralam:31, kolkata->calcutta:31, trivandrum->keralam:30, thrissur->keralam:30, kanchipuram->tmilnatu:29, cheektowaga->buffalo:29, jaipur->rajsthan:29, chesterfield->midlothian:29, drive->driev:28, drive->drve:28
+   top name substitutions (S1 token -> S2/S3 token):
+      limited->ltd:7647, inc->incorporated:1917, ltd->limited:1238, private->center:843, private->services:610, corp->corporation:342, and->center:339, private->service:311, and->services:253, co->company:250, company->co:242, private->partners:239, pc->llc:232, corporation->corp:226, group->llc:212, group->inc:207, pc->inc:205, limited->smt:199, limited->mr:189, limited->sri:179, private->praivet:177, limited->shri:162, limited->dr:156, lp->inc:138, and->service:132, india->center:128, inc->lnc:124, lp->llc:107, and->partners:100, care->center:96
+
+=== CLAIM 4: hard negatives (look-alikes) vs true pairs ===
+   set                                       n  name sim  addr sim  nums overlap
+   true pairs                          346,479      91.4      92.4         88.4%
+   hard neg: same address, other biz    41,238      27.7      61.6        100.0%
+   hard neg: same first name word       50,000      71.4      34.1          0.8%
+   S1 Bobbe T. Burns, Esq., P.C. | 2 Lincoln Street, Adams, MA
+      ≠ Miller's  Recruiting | 2 LINCOLN STREET, ADAMS, MA
+   S1 Bobbe T. Burns, Esq., P.C. | 2 Lincoln Street, Adams, MA
+      ≠ Mi1ler's Recruiting | 2 LINCOLN STREET, ADAMS, MA
+   S1 Bhavya Travels Private Limited | H.90, Block No. 1, Badsahpur, Sohna Adda, Gurgaon, Haryana
+      ≠ Ahaar Pvt Ltd Center | NO 20 , H BLOCK, 1ST MAIN, RAMAKRISHNA NAGARA, JT EXTENSION, MYSORE, Karnataka
+   S1 Bhavya Travels Private Limited | H.90, Block No. 1, Badsahpur, Sohna Adda, Gurgaon, Haryana
+      ≠ AHAAR ROOT PVT LIMITED | DOOR NO 20 , H BLOCK, 1ST MAIN, RAMAKRISHNA NAGARA, JT EXTENSION, MYSORE, Karnataka
+   S1 Bhavya Travels Private Limited | H.90, Block No. 1, Badsahpur, Sohna Adda, Gurgaon, Haryana
+      ≠ Ahaar Root Pvt | H.no 18, H Block, 1St Main, Ramakrishna Nagara, Jt Extension, Mysore, Mysuru, KA
+
+=== CLAIM 1: France, label-free checks on test data ===
+   S1: nums 99.6%  postcode 0.1%  region 100.0%  legal 66.6%  addr empty 0.0%
+   S2: nums 91.0%  postcode 0.1%  region 63.7%  legal 59.4%  addr empty 3.2%
+   S3: nums 91.6%  postcode 0.1%  region 65.4%  legal 57.3%  addr empty 3.0%
+   frequent S2/S3 address tokens rare in S1 (unhandled variants?):
+      ndeg:1975, q:191, crs:182, psg:38, app:26, aveue:25, aveneu:24, ndeg9:23, ndeg12:22, avneue:22, aenue:21, ndeglt:21, ndega:21, ndegla:21, ndeglo:21, ndegls:20, ndegle:20, ndeg22:20, pass:20, ndege:20, aveune:19, ndegt:18, ndegll:18, ndegl:18, ndeg18:17, aevnue:17, ndeg8:17, jena:17, jen:17, ndeg24:16, ndeg6:16, ndegel:16, ndeg26:16, ndeg16:16, ndeg29:16, jaen:16, ndeg28:16, alee:15, ndeg23:15, avene:15
+   frequent S2/S3 name tokens rare in S1:
+      s:4159, a:2409, participations:1451, international:1417, distribution:1403, holding:1379, l:951, r:950, u:699, et:623, snc:608, e:504, associes:460, i:343, c:321, n:65, enterprises:52, frs:46, b:40, sys:26, nc:20, pc:19, maisondesant:17, cu:15, um:14, trading:12, ai:11, council:11, mp:9, perfectionnement:9, oc:9, uc:9, guadeloupeenne:9, gymnique:9, wd:8, cub:8, management:8, ml:8, kb:8, farandole:8

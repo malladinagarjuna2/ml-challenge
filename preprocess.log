@@ -1,0 +1,6 @@
+train source1: 2,206,821 rows -> C:\Users\malla\ml_challenghe\src\..\data\clean\train_source1.parquet  (51s)
+train source2: 5,034,616 rows -> C:\Users\malla\ml_challenghe\src\..\data\clean\train_source2.parquet  (119s)
+train source3: 5,285,603 rows -> C:\Users\malla\ml_challenghe\src\..\data\clean\train_source3.parquet  (131s)
+test source1: 1,732,544 rows -> C:\Users\malla\ml_challenghe\src\..\data\clean\test_source1.parquet  (50s)
+test source2: 4,887,273 rows -> C:\Users\malla\ml_challenghe\src\..\data\clean\test_source2.parquet  (139s)
+test source3: 5,082,316 rows -> C:\Users\malla\ml_challenghe\src\..\data\clean\test_source3.parquet  (197s)

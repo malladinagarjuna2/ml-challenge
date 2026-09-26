@@ -1,0 +1,15 @@
+# Python 3.11.9 (Windows 11, 24 threads, 64 GB RAM). CUDA GPU used for XGBoost; no pretrained models (embeddings off).
+numpy==2.4.4
+pandas==3.0.2
+pyarrow==24.0.0
+scipy==1.17.1
+scikit-learn==1.8.0
+lightgbm==4.7.0
+xgboost==3.2.0   # CUDA build (pip wheel)
+rapidfuzz==3.14.6
+unidecode==1.4.0
+sparse_dot_topn==1.2.0
+joblib==1.5.3
+# only to run the notebook version (src/er_pipeline.ipynb):
+nbformat
+ipykernel

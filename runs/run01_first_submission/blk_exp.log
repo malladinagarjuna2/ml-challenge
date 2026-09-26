@@ -1,0 +1,71 @@
+
+===== cell 0 =====
+[    0.0s] mode DEV | cpu jobs 22
+----- cell 0 ok in 0s
+
+===== cell 7 =====
+[    3.0s] train L=50,000 R=10,320,219 | test L=20,000 R=9,969,589
+----- cell 7 ok in 3s
+
+===== cell 9 =====
+[    3.0s] blocking functions defined
+----- cell 9 ok in 0s
+
+===== cell 10 =====
+[   74.4s]    view v_name_c : vocab=163,434  (61s)
+[  164.3s]    view v_addr_c : vocab=153,715  (90s)
+[  229.8s]    view v_all_w  : vocab=1,874,652  (66s)
+[  457.1s]    view v_all_c  : vocab=816,396  (227s)
+[  591.2s]    view v_phon_c : vocab=137,805  (134s)
+[  954.5s] fit 588s | block 359s  per view: v_name_c=13s, v_addr_c=14s, v_all_w=8s, v_all_c=207s, v_phon_c=21s, keys=82s
+[  954.5s] pairs=1,958,252 (97.9/S1) | recall=0.9832  (68,191/69,354)
+
+view          recall  unique   (unique = true pairs ONLY this view finds)
+v_name_c      0.7508  0.0045
+v_addr_c      0.8691  0.0013
+v_all_w       0.9616  0.0059
+v_all_c       0.9446  0.0003
+v_phon_c      0.9487  0.0013
+v_key_addr    0.4480  0.0009
+v_key_name    0.1194  0.0002
+
+recall by cap (candidates kept per S1, ranked by blocking score):
+  cap   5: recall=0.8575  pairs/S1=  5.0
+  cap  10: recall=0.9396  pairs/S1= 10.0
+  cap  15: recall=0.9519  pairs/S1= 15.0
+  cap  20: recall=0.9595  pairs/S1= 20.0
+  cap  25: recall=0.9642  pairs/S1= 25.0
+  cap  30: recall=0.9674  pairs/S1= 30.0
+  cap  40: recall=0.9715  pairs/S1= 40.0
+  cap  60: recall=0.9750  pairs/S1= 60.0
+  cap 100: recall=0.9821  pairs/S1= 92.3
+
+recall by country: {'us': np.float64(0.9957), 'india': np.float64(0.965)}
+[  955.4s] extrapolated blocking time: train 400,000 S1 ~ 120 min | test 1,732,544 S1 ~ 518 min
+
+missed 1,163 true pairs, examples:
+  S1 Perfect Finance Pvt Ltd             | Unit No. 9, 605 / B, Chhaya, Apna Ghar, Lokhandwala Com [mh]
+   ->परफेक्ट फाइनेंस प्रा. लि.           | UNIT NO. #9, (WEST), MUMBAI, महाराष्ट्र                 [mh]
+  S1 Parker Elite Inc                    | 7310 Broadway, Unit Apartment 3, Red Hook, NY           [ny]
+   ->PARKER EEE INC                      |                                                         []
+  S1 Shakti Technology Private Limited   | B-22 Amol Apartment, Tambe Nagar Sarojini Naidu Road Mu [mh]
+   ->Shakti Technology Private           |                                                         []
+  S1 Jay Finance                         | A5/1, Sfs, Dda Flats, New Delhi, South Delhi, Delhi     [dl]
+   ->Shri Zephde1tanyla                  | A5/1, South Delhi, New Delhi, DL                        [dl]
+  S1 Hari Consultancy Limited            | 3, Floor-2, 60, Gorde Bhavan Building, Nr Shushrusha Ho [mh]
+   ->हरि कंसल्टेंसी लिमिटेड              | A-3, Mumabi, Mumbai, MH                                 [mh]
+  S1 Hari Consultancy Limited            | 3, Floor-2, 60, Gorde Bhavan Building, Nr Shushrusha Ho [mh]
+   ->हरि कंसल्टेंसी लिमिटेड              | A-3, Mumabi, Mumbai, MH                                 [mh]
+  S1 East Infra Private Limited          | 899, West Bengal, Nutan Pally, Dakshin Para Purba Putia [wb]
+   ->ইস্ট ইনফ্রা প্রাইভেট লিমিটেড        | 899, BARUIPUR, পশ্চিমবঙ্গ                               [wb]
+  S1 East Infra Private Limited          | 899, West Bengal, Nutan Pally, Dakshin Para Purba Putia [wb]
+   ->ইস্ট ইনফ্রা প্রাইভেট লিমিটেড        | 899, West Bengal, BARUIPUR                              [wb]
+  S1 Eye Specialists                     | 2136 Walker Lane, Nederland, TX                         [tx]
+   ->Eye  5pecia1ists                    |                                                         []
+  S1 Kritin Tulsi Care                   | Plot No. 9, Ground Floor, Vrundavan Raw House - 2 Lajam [gj]
+   ->Kritin Tnusi Care                   | No 9, NULL, Surat, GJ                                   [gj]
+  S1 Shiv Finance Private Limited        | Shop No.19, Shiv Shakti Nagar 'B', Near Railway Overbri [rj]
+   ->शिव फाइनेंस प्राइवेट लिमिटेड        | SHOP NO.19, JAIPUR, Rajasthan                           [rj]
+  S1 Shiv Finance Private Limited        | Shop No.19, Shiv Shakti Nagar 'B', Near Railway Overbri [rj]
+   ->शिव फाइनेंस प्राइवेट लिमिटेड        | JAIPUR, SHOP NO.19, Rajasthan                           [rj]
+----- cell 10 ok in 961s

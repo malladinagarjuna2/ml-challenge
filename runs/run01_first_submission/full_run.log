@@ -1,0 +1,35 @@
+
+===== cell 0 =====
+[    0.0s] mode FULL | cpu jobs 22
+----- cell 0 ok in 0s
+
+===== cell 7 =====
+[    1.9s] train L=200,000 R=10,320,219 | test L=1,732,544 R=9,969,589
+----- cell 7 ok in 2s
+
+===== cell 9 =====
+[    2.0s] blocking functions defined
+----- cell 9 ok in 0s
+
+===== cell 11 =====
+[    3.2s] blocking train ...
+[   61.7s]    view v_name_c : vocab=164,241  (53s)
+[  147.5s]    view v_addr_c : vocab=156,230  (86s)
+[  213.9s]    view v_all_w  : vocab=2,054,319  (66s)
+[  334.3s]    view v_phon_c : vocab=138,690  (120s)
+[  678.2s] train pairs=8,000,000 (40.0/S1) | blocking recall=0.9762
+----- cell 11 ok in 676s
+
+===== cell 12 =====
+[  678.2s] features train ...
+[ 1104.1s] n_features=82
+----- cell 12 ok in 426s
+
+===== cell 13 =====
+[ 1104.3s] (reference) predict-all-empty F0.5 = 0.05620
+----- cell 13 ok in 0s
+
+===== cell 14 =====
+[ 1104.3s] stage-1 training ...
+[ 1698.2s]    fold 0: best_it=2990
+[ 2303.4s]    fold 1: best_it=2954

@@ -1,0 +1,55 @@
+{
+ "run": "run01_first_submission",
+ "date": "2026-09-27",
+ "config": {
+  "train_s1": 200000,
+  "sampling": "random S1 sample vs all S2/S3",
+  "views": [
+   "v_name_c",
+   "v_addr_c",
+   "v_all_w",
+   "v_phon_c",
+   "v_key_addr",
+   "v_key_name"
+  ],
+  "candidates_per_s1": 40,
+  "ranking": "reciprocal-rank fusion",
+  "model": "XGBoost cuda, 2 stages x 5 folds",
+  "decision": "expected-F0.5, one-to-one"
+ },
+ "validation_oof": {
+  "f05": 0.9649,
+  "us": 0.9718,
+  "india": 0.9544,
+  "singletons": 0.9436,
+  "non_singletons": 0.9661,
+  "precision": 0.9899,
+  "recall": 0.923,
+  "oracle_f05_same_shortlist": 0.9912,
+  "loss_blocking": 0.0088,
+  "loss_model_decision": 0.0264,
+  "stage1_auc": 0.99953,
+  "stage2_auc": 0.99957,
+  "blocking_recall_top40": 0.9762
+ },
+ "test_output": {
+  "s1": 1732544,
+  "non_empty": 1625930,
+  "mean_matches": 3.17,
+  "candidate_pairs": 69301712,
+  "validator": "PASS",
+  "leaderboard_score": null
+ },
+ "known_issues": [
+  "random S1 sample for training -> over-cautious model (recall 92.3%)",
+  "no name-uniqueness features (address-less records rejected)",
+  "France unpartitioned (60 min)",
+  "single-core loops in features/stage-2/decision",
+  "models not persisted (lost with the kernel)"
+ ],
+ "files": {
+  "matching_results.tsv": "6f5d396fe31ae704",
+  "candidate_pairs.tsv": "7998fc7bf1066f88",
+  "team_submission.zip": "731dc040bbb04015"
+ }
+}

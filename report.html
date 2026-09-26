@@ -1,0 +1,536 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Amazon ML Challenge 2026 — Business Entity Resolution: where we are</title>
+<style>
+.viz-root {
+  color-scheme: light;
+  --page: #f4f3f0;
+  --surface-1: #fcfcfb;
+  --surface-2: #efeee9;
+  --border: #dddcd5;
+  --text-primary: #0b0b0b;
+  --text-secondary: #52514e;
+  --text-muted: #7a7974;
+  --series-1: #2a78d6;
+  --series-2: #eb6834;
+  --series-3: #1baf7a;
+  --grid: #e6e5df;
+  --good: #008300;
+  --warn: #b36b00;
+  --code-bg: #efeee9;
+}
+@media (prefers-color-scheme: dark) {
+  :root:where(:not([data-theme="light"])) .viz-root {
+    color-scheme: dark;
+    --page: #111110; --surface-1: #1a1a19; --surface-2: #242422; --border: #353532;
+    --text-primary: #ffffff; --text-secondary: #c3c2b7; --text-muted: #8f8e86;
+    --series-1: #3987e5; --series-2: #d95926; --series-3: #199e70; --grid: #2c2c2a;
+    --good: #3fae3f; --warn: #e0a030; --code-bg: #242422;
+  }
+}
+:root[data-theme="dark"] .viz-root {
+  color-scheme: dark;
+  --page: #111110; --surface-1: #1a1a19; --surface-2: #242422; --border: #353532;
+  --text-primary: #ffffff; --text-secondary: #c3c2b7; --text-muted: #8f8e86;
+  --series-1: #3987e5; --series-2: #d95926; --series-3: #199e70; --grid: #2c2c2a;
+  --good: #3fae3f; --warn: #e0a030; --code-bg: #242422;
+}
+* { box-sizing: border-box; }
+body { margin: 0; }
+.viz-root {
+  background: var(--page); color: var(--text-primary);
+  font: 15px/1.55 system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  min-height: 100vh;
+}
+.wrap { max-width: 1060px; margin: 0 auto; padding: 28px 22px 80px; }
+header h1 { font-size: 28px; margin: 0 0 4px; }
+header p { margin: 0; color: var(--text-secondary); }
+.toc { display: flex; flex-wrap: wrap; gap: 8px; margin: 18px 0 8px; }
+.toc a { font-size: 13px; color: var(--text-secondary); text-decoration: none; padding: 4px 10px;
+  border: 1px solid var(--border); border-radius: 999px; background: var(--surface-1); }
+.toc a:hover { color: var(--text-primary); }
+section { background: var(--surface-1); border: 1px solid var(--border); border-radius: 12px;
+  padding: 22px 24px; margin-top: 18px; }
+h2 { font-size: 20px; margin: 0 0 4px; }
+h2 .n { color: var(--text-muted); font-weight: 500; margin-right: 6px; }
+h3 { font-size: 15px; margin: 20px 0 8px; }
+.lead { color: var(--text-secondary); margin: 0 0 14px; }
+code, pre { font-family: ui-monospace, "Cascadia Code", Consolas, monospace; font-size: 13px; }
+code { background: var(--code-bg); padding: 1px 5px; border-radius: 4px; }
+pre { background: var(--code-bg); padding: 12px 14px; border-radius: 8px; overflow-x: auto; margin: 8px 0; }
+table { border-collapse: collapse; width: 100%; font-size: 14px; }
+th, td { text-align: left; padding: 7px 10px; border-bottom: 1px solid var(--grid); vertical-align: top; }
+th { color: var(--text-secondary); font-weight: 600; font-size: 13px; }
+td.num, th.num { text-align: right; font-variant-numeric: tabular-nums; }
+.grid2 { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+.grid4 { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; }
+@media (max-width: 760px) { .grid2, .grid4 { grid-template-columns: 1fr; } }
+.tile { background: var(--surface-2); border-radius: 10px; padding: 14px 16px; }
+.tile .big { font-size: 30px; font-weight: 700; line-height: 1.1; font-variant-numeric: tabular-nums; }
+.tile .lbl { color: var(--text-secondary); font-size: 13px; margin-top: 4px; }
+.card { background: var(--surface-2); border-radius: 10px; padding: 14px 16px; }
+.card h4 { margin: 0 0 6px; font-size: 14px; }
+.card ul { margin: 0; padding-left: 18px; }
+.muted { color: var(--text-muted); }
+.status { display: grid; grid-template-columns: repeat(6, 1fr); gap: 8px; margin-top: 10px; }
+@media (max-width: 760px) { .status { grid-template-columns: 1fr 1fr; } }
+.step { border: 1px solid var(--border); border-radius: 10px; padding: 10px 12px; font-size: 13px; }
+.step b { display: block; font-size: 14px; margin-bottom: 2px; }
+.step.done { border-color: var(--good); }
+.step.done::before { content: "✓ Done"; color: var(--good); font-weight: 700; font-size: 12px; }
+.step.next { border-color: var(--warn); border-style: dashed; }
+.step.next::before { content: "→ Next"; color: var(--warn); font-weight: 700; font-size: 12px; }
+.step.todo::before { content: "○ To do"; color: var(--text-muted); font-weight: 700; font-size: 12px; }
+.flow { display: flex; align-items: stretch; gap: 6px; flex-wrap: wrap; margin: 10px 0; }
+.flow .box { flex: 1 1 120px; background: var(--surface-2); border-radius: 8px; padding: 10px; font-size: 13px; }
+.flow .box b { display: block; font-size: 13px; }
+.flow .arrow { align-self: center; color: var(--text-muted); font-size: 18px; }
+.rec { font-family: ui-monospace, Consolas, monospace; font-size: 12.5px; }
+.rec td { padding: 5px 8px; }
+.note { color: var(--text-secondary); font-size: 13px; }
+.src { display: inline-block; font-size: 11px; font-weight: 700; padding: 1px 6px; border-radius: 4px;
+  background: var(--surface-2); border: 1px solid var(--border); color: var(--text-secondary); }
+
+/* ---- charts (HTML bars) ---- */
+.chart { margin-top: 6px; }
+.chart .title { font-weight: 600; font-size: 14px; }
+.chart .sub { color: var(--text-secondary); font-size: 13px; margin-bottom: 10px; }
+.hbars { display: grid; grid-template-columns: 150px 1fr 70px; gap: 6px 10px; align-items: center; font-size: 13px; }
+.hbars .lab { color: var(--text-secondary); text-align: right; }
+.hbars .track { position: relative; height: 18px; }
+.hbars .bar { position: absolute; left: 0; top: 0; bottom: 0; background: var(--series-1);
+  border-radius: 0 4px 4px 0; min-width: 2px; }
+.hbars .val { font-variant-numeric: tabular-nums; color: var(--text-primary); }
+.hbars .hit { cursor: default; }
+.hbars .hit:hover .bar { filter: brightness(1.12); }
+.vbars { display: flex; align-items: flex-end; gap: 2px; height: 190px; border-bottom: 1px solid var(--text-muted);
+  padding: 0 4px; position: relative; }
+.vbars .col { flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: flex-end; height: 100%; }
+.vbars .col .bar { width: 72%; background: var(--series-1); border-radius: 4px 4px 0 0; min-height: 2px; }
+.vbars .col:hover .bar { filter: brightness(1.12); }
+.vbars .col .top { font-size: 11px; color: var(--text-secondary); margin-bottom: 3px; font-variant-numeric: tabular-nums; }
+.vx { display: flex; gap: 2px; padding: 4px 4px 0; font-size: 12px; color: var(--text-secondary); }
+.vx span { flex: 1; text-align: center; }
+.gline { position: absolute; left: 0; right: 0; border-top: 1px solid var(--grid); }
+.pair { display: grid; grid-template-columns: 150px 1fr 60px; gap: 4px 10px; align-items: center; font-size: 13px; margin-bottom: 12px; }
+.pair .lab { color: var(--text-secondary); text-align: right; grid-row: span 2; align-self: center; }
+.pair .track { position: relative; height: 14px; }
+.pair .bar { position: absolute; left: 0; top: 0; bottom: 0; border-radius: 0 4px 4px 0; }
+.pair .b1 { background: var(--series-1); }
+.pair .b2 { background: var(--series-2); }
+.legend { display: flex; gap: 16px; font-size: 13px; color: var(--text-secondary); margin: 4px 0 12px; }
+.legend i { display: inline-block; width: 12px; height: 12px; border-radius: 3px; margin-right: 6px; vertical-align: -1px; }
+.stack { display: flex; height: 26px; gap: 2px; border-radius: 4px; overflow: hidden; }
+.stack div { display: flex; align-items: center; justify-content: center; font-size: 12px; color: #fff; font-weight: 600; }
+.stackrow { display: grid; grid-template-columns: 110px 1fr; gap: 10px; align-items: center; margin-bottom: 8px; font-size: 13px; }
+details { margin-top: 10px; }
+summary { cursor: pointer; color: var(--text-secondary); font-size: 13px; }
+#tip { position: fixed; pointer-events: none; background: var(--text-primary); color: var(--surface-1);
+  font-size: 12px; padding: 6px 9px; border-radius: 6px; opacity: 0; transition: opacity .1s; z-index: 9; max-width: 280px; }
+.themebtn { float: right; font-size: 12px; background: var(--surface-1); color: var(--text-secondary);
+  border: 1px solid var(--border); border-radius: 999px; padding: 4px 10px; cursor: pointer; }
+</style>
+</head>
+<body>
+<div class="viz-root">
+<div class="wrap">
+
+<header>
+  <button class="themebtn" id="themebtn">Toggle dark / light</button>
+  <h1>Business Entity Resolution — project walkthrough</h1>
+  <p>Amazon ML Challenge 2026 · what the problem is, what the data looks like, what has been built so far, and what comes next.</p>
+  <nav class="toc">
+    <a href="#status">0 · Status</a><a href="#problem">1 · The problem</a><a href="#scoring">2 · Scoring</a>
+    <a href="#data">3 · The dataset</a><a href="#example">4 · One business, 7 records</a>
+    <a href="#noise">5 · Noise</a><a href="#clean">6 · Preprocessing</a><a href="#proof">7 · Did it help?</a>
+    <a href="#outputs">8 · Outputs</a><a href="#next">9 · Next steps</a>
+  </nav>
+</header>
+
+<!-- 0 STATUS -->
+<section id="status">
+  <h2><span class="n">0</span>Where we are</h2>
+  <p class="lead">The pipeline has six stages. Stages 1–2 are done; blocking is next.</p>
+  <div class="status">
+    <div class="step done"><b>1. Explore data</b>Counts, match structure, noise patterns</div>
+    <div class="step done"><b>2. Clean / normalize</b>23.4M rows → parquet</div>
+    <div class="step next"><b>3. Blocking</b>Generate candidate pairs</div>
+    <div class="step todo"><b>4. Features</b>Similarity scores per pair</div>
+    <div class="step todo"><b>5. Model</b>LightGBM (+ cross-encoder)</div>
+    <div class="step todo"><b>6. Decide &amp; submit</b>Thresholds for F0.5, validate</div>
+  </div>
+</section>
+
+<!-- 1 PROBLEM -->
+<section id="problem">
+  <h2><span class="n">1</span>The problem in one picture</h2>
+  <p class="lead">Three data vendors describe the same businesses, but share no ID. Only the <b>name</b> and <b>address</b> are available.
+  For every record in Source 1, find all records in Sources 2 and 3 that are the same real business.</p>
+  <div class="flow">
+    <div class="box"><b>Source 1</b>Clean reference list, deduplicated: one row = one real business</div>
+    <div class="arrow">+</div>
+    <div class="box"><b>Source 2 &amp; 3</b>Noisy vendor records: typos, abbreviations, other scripts, decoys</div>
+    <div class="arrow">→</div>
+    <div class="box"><b>Blocking</b>Cheap shortlist of likely candidates per S1 record</div>
+    <div class="arrow">→</div>
+    <div class="box"><b>Matching model</b>Scores each candidate pair, keeps only true matches</div>
+    <div class="arrow">→</div>
+    <div class="box"><b>matching_results.tsv</b>One row per S1 entity with its matched IDs (can be empty)</div>
+  </div>
+  <h3>What we submit</h3>
+<pre>source1_entity_id	matched_entity_ids
+S1-00001	S2-00047,S2-00193,S3-00812
+S1-00002	S3-00004
+S1-00003	            &lt;- empty = "matches nothing" (a singleton)</pre>
+  <p class="note">The final zip also contains <code>candidate_pairs.tsv</code> (our blocking shortlist, audited but not scored), the runnable code, and a methodology document.
+  External lookups (geocoding, business registries, APIs) are forbidden. Any model must be MIT/Apache-2.0 licensed and ≤ 8B parameters.</p>
+</section>
+
+<!-- 2 SCORING -->
+<section id="scoring">
+  <h2><span class="n">2</span>How we are scored</h2>
+  <p class="lead"><b>Macro F0.5</b>: an F-score is calculated separately for each Source 1 entity, then averaged over all of them.</p>
+  <pre>F0.5 = (1.25 × Precision × Recall) / (0.25 × Precision + Recall)</pre>
+  <div class="grid2">
+    <div class="card"><h4>Precision matters twice as much as recall</h4>
+      A wrong match (false merge) hurts about twice as much as a missed one. <b>When unsure, don't match.</b></div>
+    <div class="card"><h4>Singletons are all-or-nothing</h4>
+      If an entity truly has no matches, an empty prediction scores <b>1.0</b> and any prediction scores <b>0</b>.</div>
+  </div>
+  <h3>Worked example</h3>
+  <p class="note">Predicted <code>[S2-47, S2-193, S3-812]</code>, truth <code>[S2-47, S3-812]</code> → precision 2/3, recall 1 → F0.5 = <b>0.714</b>.
+  The single extra wrong ID cost almost 30% of that entity's score.</p>
+</section>
+
+<!-- 3 DATASET -->
+<section id="data">
+  <h2><span class="n">3</span>The dataset</h2>
+  <p class="lead">About 2.5 GB of tab-separated files. Every source file has 4 columns:
+  <code>entity_id</code>, <code>business_name</code>, <code>business_address</code>, <code>country</code>.
+  The source is given by the ID prefix (<code>S1-</code>/<code>S2-</code>/<code>S3-</code>).</p>
+
+  <div class="grid4">
+    <div class="tile"><div class="big">3.46</div><div class="lbl">average matches per Source 1 entity (1.7 from S2, 1.8 from S3)</div></div>
+    <div class="tile"><div class="big">5.6%</div><div class="lbl">singletons: S1 entities that match nothing</div></div>
+    <div class="tile"><div class="big">0</div><div class="lbl">S2/S3 records matched to more than one S1 entity (out of 7.6M)</div></div>
+    <div class="tile"><div class="big">~26%</div><div class="lbl">S2/S3 records that match nothing (decoys)</div></div>
+  </div>
+
+  <div class="grid2" style="margin-top:18px">
+    <div class="chart">
+      <div class="title">Rows per file (millions)</div>
+      <div class="sub">Train and test are about the same size</div>
+      <div class="hbars" id="rows"></div>
+    </div>
+    <div class="chart">
+      <div class="title">Country mix, train vs test (Source 3)</div>
+      <div class="sub">France appears only in test: 1 in 7 test records comes from an unseen country</div>
+      <div class="stackrow"><span class="muted">Train</span>
+        <div class="stack" id="stackTrain"></div></div>
+      <div class="stackrow"><span class="muted">Test</span>
+        <div class="stack" id="stackTest"></div></div>
+      <div class="legend" id="countryLegend"></div>
+      <table>
+        <tr><th></th><th class="num">US</th><th class="num">India</th><th class="num">France</th></tr>
+        <tr><td>Train S3</td><td class="num">3,170,056</td><td class="num">2,115,547</td><td class="num">0</td></tr>
+        <tr><td>Test S3</td><td class="num">1,945,701</td><td class="num">2,405,000</td><td class="num">731,615</td></tr>
+      </table>
+    </div>
+  </div>
+
+  <div class="chart" style="margin-top:22px">
+    <div class="title">How many matches does a Source 1 entity have?</div>
+    <div class="sub">Share of 2,206,821 training entities. Most have 2–5 matches; only 5.6% have none.</div>
+    <div class="vbars" id="hist"></div>
+    <div class="vx" id="histx"></div>
+    <details><summary>Show as table</summary><table id="histTable"></table></details>
+  </div>
+
+  <h3>What these facts mean</h3>
+  <ul>
+    <li><b>"0 records matched twice"</b>: each S2/S3 record belongs to at most one S1 entity. If a record is claimed by two S1 entities, at most one of them can be right; we will keep only the best one.</li>
+    <li><b>26% decoys</b>: many S2/S3 records look similar to something but match nothing. These are what cause false merges.</li>
+    <li><b>US and India behave the same</b>: 5.6% singletons and 3.46 matches on average in both, so the data was likely generated the same way. We expect France to follow the same pattern.</li>
+  </ul>
+</section>
+
+<!-- 4 EXAMPLE -->
+<section id="example">
+  <h2><span class="n">4</span>One real business, seven different records</h2>
+  <p class="lead">A real ground-truth group from the training data. Each vendor adds its own kind of noise.</p>
+  <table class="rec">
+    <tr><th>Src</th><th>Name</th><th>Address</th><th>What's different</th></tr>
+    <tr><td><span class="src">S1</span></td><td>Cabrera Secure Sciences</td><td>165 Barren River Drive, Unit UNIT 2, Erlanger, KY</td><td class="muted">reference</td></tr>
+    <tr><td><span class="src">S2</span></td><td>Cabrera Secure Sciences Ltd</td><td>BARREN RIVER DR, ERLANGER, KY</td><td>extra suffix, house number missing</td></tr>
+    <tr><td><span class="src">S2</span></td><td>CABRERA SECURE SCIENCES</td><td>ERLANGER, KY, 165 BARREN RIVER DRIVE</td><td>uppercase, components reordered</td></tr>
+    <tr><td><span class="src">S2</span></td><td>Cabrera 5ecure Sciences LP</td><td>165 BARREN RIVER DR, ERLANGER KY, KY</td><td>digit typo, different legal form</td></tr>
+    <tr><td><span class="src">S3</span></td><td>Cabrera&nbsp;&nbsp;Secure Sciences</td><td>165 Barren River Drive, # UNIT 2, Erlanger Ky, Kentucky</td><td>double space, state spelled out</td></tr>
+    <tr><td><span class="src">S3</span></td><td>Cabrera Secure Sciences</td><td>Kentucky, Unit UNIT 2, Barren River Dr, Erlanger Ky</td><td>reordered, no house number</td></tr>
+    <tr><td><span class="src">S3</span></td><td>Jaxaria Formerly Cabrera Secure Sciences</td><td>165 Barren River Drive, Unit UNIT 2, Erlanger, KY</td><td>alias ("formerly")</td></tr>
+  </table>
+  <h3>An Indian example (native scripts, missing parts)</h3>
+  <table class="rec">
+    <tr><td><span class="src">S1</span></td><td>Galaxy Logistics Private Limited</td><td>5Th Floor, Chakolas Heights, Seaport Airport Road Near Infopark South Gate, …, Kakkanad, Ernakulam, Kerala</td></tr>
+    <tr><td><span class="src">S2</span></td><td>ഗാലക്സി ലോജിസ്റ്റിക്സ് പ്രൈവറ്റ് ലിമിറ്റഡ്</td><td>Kerala, ERNAKULAM, FLOOR</td></tr>
+    <tr><td><span class="src">S3</span></td><td>Sri Galaxy Logistics</td><td>Th Floor, Chakolas Heights, Seaport Airport Road Near Infopark South Gate, …, Kochi, KL</td></tr>
+    <tr><td><span class="src">S3</span></td><td>Shri Galaxy Logistics Prívate Limited</td><td>KL, Door No Th Fltor, Ernakulam, Kochi, Chakolas Heights, …</td></tr>
+  </table>
+  <p class="note">Some true matches have a name that is completely unrelated: <code>Straight Edge Ice Cream Inc.</code> ↔ <code>XYLOQUO</code>. Only the address links these, so the model must be able to match on address alone.</p>
+</section>
+
+<!-- 5 NOISE -->
+<section id="noise">
+  <h2><span class="n">5</span>Catalog of the noise we observed</h2>
+  <div class="grid2">
+    <div class="card"><h4>In names</h4><ul>
+      <li>Digit typos: <code>C0mpany</code>, <code>5ecure</code></li>
+      <li>Random accents: <code>Ínc</code>, <code>Léarning</code>, <code>Àmicale</code></li>
+      <li>Legal suffix changes: Inc ↔ Incorporated ↔ LP ↔ none</li>
+      <li>Descriptor words added or dropped: <code>Indchem Power</code> = <code>Indchem Services</code></li>
+      <li>Word order: <code>asset committee building</code></li>
+      <li>Junk prefixes: <code>--</code> <code>&gt;&gt;</code> <code>***</code> <code>#</code> <code>@</code> <code>&lt;&lt;</code></li>
+      <li>Aliases (mostly Source 3): dba, formerly, f/k/a, aka, t/a</li>
+      <li>Website instead of a name: about 4% of rows</li>
+      <li>Indian scripts: <b>9–11%</b> of names</li>
+      <li>Made-up, unrelated names: <code>Vioorbisyn</code>, <code>Quokorflux</code></li>
+    </ul></div>
+    <div class="card"><h4>In addresses</h4><ul>
+      <li>Abbreviations: St / Street / <b>Saint</b>, Rd / Road, Dr / Drive</li>
+      <li>Components reordered: <code>TX, 709 Hackberry…</code></li>
+      <li>Missing parts; 3.4% fully empty or <code>NULL</code></li>
+      <li>Zero padding <code>00709</code>, dropped digits <code>1344→344</code>, <code>B-259→B-59</code></li>
+      <li>States as code, full name, or native script: <code>TX/Texas</code>, <code>DL/Delhi/दिल्ली</code></li>
+      <li>Landmarks: <code>Near Infopark South Gate</code>, <code>Opp SBI ATM</code></li>
+      <li>India formats: <code>H.No</code>, <code>Door No</code>, <code>KH NO. -570/13</code>, <code>5-513/4</code></li>
+      <li>City noise: <code>CHICAGOCDP</code>, <code>Erlanger Ky</code></li>
+      <li>France (test only): <code>R.</code> = rue, <code>bis</code>, SARL/SAS/EURL/SCI</li>
+    </ul></div>
+  </div>
+</section>
+
+<!-- 6 CLEANING -->
+<section id="clean">
+  <h2><span class="n">6</span>Preprocessing: what the cleaning does</h2>
+  <p class="lead">Each record becomes a set of normalized <b>fields</b> the later stages can compare. No rows are deleted: every ID must stay matchable, and every S1 entity must appear in the output.</p>
+
+  <div class="flow">
+    <div class="box"><b>Raw text</b>any script, any case</div><div class="arrow">→</div>
+    <div class="box"><b>1. Generic clean</b>NFKC, transliterate to Latin, strip accents, lowercase, NULL→empty, fix ordinals and leet typos</div><div class="arrow">→</div>
+    <div class="box"><b>2. Name fields</b>strip junk and websites, split aliases, extract legal form, drop generic words</div><div class="arrow">→</div>
+    <div class="box"><b>3. Address fields</b>postcode, house numbers, state code, abbreviations, landmarks</div><div class="arrow">→</div>
+    <div class="box"><b>Parquet</b>original columns + about 20 cleaned columns</div>
+  </div>
+
+  <h3>Fields produced for every record</h3>
+  <table>
+    <tr><th>Field</th><th>Meaning</th><th>Example (from <code>Fannie Trussell Inc Services | 00709 Hackberry Saint, Tilden, Texas</code>)</th></tr>
+    <tr><td><code>name</code></td><td>cleaned full name</td><td>fannie trussell inc services</td></tr>
+    <tr><td><code>name_strict</code></td><td>without legal suffix or generic words: the identity core</td><td>fannie trussell</td></tr>
+    <tr><td><code>name_sorted</code></td><td>words sorted, so word order doesn't matter</td><td>fannie trussell</td></tr>
+    <tr><td><code>name_alts</code></td><td>alias names after dba / formerly / aka</td><td class="muted">(none)</td></tr>
+    <tr><td><code>legal</code></td><td>canonical legal form</td><td>inc</td></tr>
+    <tr><td><code>addr</code></td><td>cleaned address, abbreviations expanded</td><td>709 hackberry street tilden</td></tr>
+    <tr><td><code>addr_street</code></td><td>address words only (no numbers or landmarks)</td><td>hackberry street tilden</td></tr>
+    <tr><td><code>nums</code></td><td>house or unit numbers, zeros stripped</td><td>709</td></tr>
+    <tr><td><code>postcode</code> / <code>state</code> / <code>region</code></td><td>structured location</td><td>— / tx / —</td></tr>
+    <tr><td><code>landmark</code>, <code>is_web</code>, <code>has_alias</code>, <code>addr_missing</code></td><td>flags for the model</td><td>—</td></tr>
+  </table>
+
+  <h3>Before → after on real rows</h3>
+  <table class="rec">
+    <tr><th>Raw</th><th>Cleaned (name_strict · addr · nums · state)</th></tr>
+    <tr><td>Fannie Trussell Seneca Ínc | 709 HACKBERRY ST, TILDEN, TX</td><td>fannie trussell seneca · 709 hackberry street tilden · 709 · tx</td></tr>
+    <tr><td>Fannie Trussell Inc Services | 00709 Hackberry Saint, Tilden, Texas</td><td>fannie trussell · 709 hackberry street tilden · 709 · tx</td></tr>
+    <tr><td>Cabrera 5ecure Sciences LP</td><td>cabrera secure sciences (legal: lp)</td></tr>
+    <tr><td>Quoavi Co doing business as Asset Building Committee</td><td>quoavi + alias <b>asset building committee</b></td></tr>
+    <tr><td>-- Holloway Peak Inc Seafood</td><td>holloway peak seafood</td></tr>
+    <tr><td>wilfordhancock.com</td><td>wilfordhancock (is_web)</td></tr>
+    <tr><td>Elite + C0mpany | B-59, DERAWAL NAGAR, Delhi</td><td>elite · b-59 derawal nagar · b-59 · dl</td></tr>
+    <tr><td>राम मार्केटिंग प्रा. लि.</td><td>ram marketimg (legal: pvt ltd)</td></tr>
+    <tr><td>Lawrence Ventures Private Limited | H.no C-956 Jd-36b, New Delhi, दिल्ली</td><td>lawrence · c-956 jd-36b · c-956 jd-36b · dl</td></tr>
+    <tr><td>Galaxy Logistics Pvt Ltd | 5Th Floor, … Road Near Infopark South Gate, Kakkanad</td><td>galaxy logistics · landmark = <i>near infopark south gate</i></td></tr>
+    <tr><td>Marina Ecole France Sarl | 63 R. DE DIEPPE, LILLE, Hauts-de-France</td><td>marina ecole france · 63 rue de dieppe lille · 63 · region: hauts de france</td></tr>
+  </table>
+
+  <h3>Design decisions</h3>
+  <ul>
+    <li><b>Transliterate, don't translate.</b> <code>anyascii</code> converts every script to Latin offline, so no external service is used. Character n-grams will cover spelling gaps such as <code>marketimg</code> ↔ <code>marketing</code>.</li>
+    <li><b>Keep several versions of each name.</b> Legal suffixes and descriptor words are sometimes meaningful (Acme Robotics vs Acme Bakery), so the model receives both the full and the stripped versions.</li>
+    <li><b>Addresses as a bag of components</b>, because vendors reorder them.</li>
+    <li><b>Nothing hard-coded to US/India.</b> Country tables are only extra rules; an unseen country like France still gets all the generic cleaning.</li>
+  </ul>
+</section>
+
+<!-- 7 PROOF -->
+<section id="proof">
+  <h2><span class="n">7</span>Did the cleaning help? (measured, not assumed)</h2>
+  <p class="lead">69,061 true pairs from the ground truth vs 19,920 non-matching pairs from the same state. Similarity score 0–100 (rapidfuzz token-set ratio). Good cleaning should <b>raise</b> true pairs and <b>lower</b> non-matches.</p>
+  <div class="legend"><span><i style="background:var(--series-1)"></i>True match</span><span><i style="background:var(--series-2)"></i>Non-match</span></div>
+  <div id="proofChart"></div>
+  <details open><summary>Table</summary>
+  <table>
+    <tr><th>Metric</th><th class="num">True match</th><th class="num">Non-match</th><th class="num">Gap</th></tr>
+    <tr><td>Name similarity, raw</td><td class="num">84.6</td><td class="num">32.2</td><td class="num">52.4</td></tr>
+    <tr><td>Name similarity, cleaned</td><td class="num"><b>92.2</b></td><td class="num"><b>28.7</b></td><td class="num"><b>63.5</b></td></tr>
+    <tr><td>Address similarity, raw</td><td class="num">85.2</td><td class="num">41.8</td><td class="num">43.3</td></tr>
+    <tr><td>Address similarity, cleaned</td><td class="num"><b>92.5</b></td><td class="num"><b>37.8</b></td><td class="num"><b>54.6</b></td></tr>
+    <tr><td>House numbers overlap (when both have one)</td><td class="num"><b>88%</b></td><td class="num"><b>1%</b></td><td class="num">87 pts</td></tr>
+    <tr><td>Cleaned names exactly equal</td><td class="num">57%</td><td class="num">0%</td><td class="num"></td></tr>
+  </table></details>
+  <p class="note">The gap between matches and non-matches widened by about 11 points on both fields. House-number agreement is the strongest single signal found so far.</p>
+  <h3>Still hard after cleaning</h3>
+  <ul>
+    <li>Cross-script names: <code>குட் வென்ச்சர்ஸ்</code> → <code>kut venccrs</code> vs <code>good ventures</code>. To be handled with character n-grams, a phonetic key and the address.</li>
+    <li>Made-up names (<code>XYLOQUO</code>): address only.</li>
+  </ul>
+</section>
+
+<!-- 8 OUTPUTS -->
+<section id="outputs">
+  <h2><span class="n">8</span>What has been produced</h2>
+  <div class="grid2">
+    <div>
+      <h3 style="margin-top:0">Cleaned data: <code>data/clean/</code> (4.9 GB)</h3>
+      <table>
+        <tr><th>File</th><th class="num">Rows</th><th class="num">Time</th></tr>
+        <tr><td>train_source1.parquet</td><td class="num">2,206,821</td><td class="num">56s</td></tr>
+        <tr><td>train_source2.parquet</td><td class="num">5,034,616</td><td class="num">122s</td></tr>
+        <tr><td>train_source3.parquet</td><td class="num">5,285,603</td><td class="num">133s</td></tr>
+        <tr><td>test_source1.parquet</td><td class="num">1,732,544</td><td class="num">49s</td></tr>
+        <tr><td>test_source2.parquet</td><td class="num">4,887,273</td><td class="num">132s</td></tr>
+        <tr><td>test_source3.parquet</td><td class="num">5,082,316</td><td class="num">138s</td></tr>
+      </table>
+      <p class="note">About 10 minutes in total on 22 CPU cores.</p>
+    </div>
+    <div>
+      <h3 style="margin-top:0">Code: <code>src/</code></h3>
+      <table>
+        <tr><td><code>normalize.py</code></td><td>all cleaning rules (names, addresses, per-country tables)</td></tr>
+        <tr><td><code>preprocess.py</code></td><td>runs cleaning on all 6 files in parallel → parquet</td></tr>
+        <tr><td><code>test_normalize.py</code></td><td>before/after on real example rows</td></tr>
+        <tr><td><code>check_cleaning.py</code></td><td>measures similarity on ground-truth pairs (section 7)</td></tr>
+        <tr><td><code>eda.py</code></td><td>dataset statistics (section 3)</td></tr>
+      </table>
+      <pre>python src/preprocess.py   # re-run cleaning</pre>
+    </div>
+  </div>
+</section>
+
+<!-- 9 NEXT -->
+<section id="next">
+  <h2><span class="n">9</span>What comes next</h2>
+  <div class="grid2">
+    <div class="card"><h4>3 · Blocking (next)</h4><ul>
+      <li>Several cheap ways to shortlist candidates, combined: TF-IDF character n-grams on names (top-K neighbours), rare shared name tokens, same house number + postcode/city, phonetic keys</li>
+      <li>Always within the same country</li>
+      <li>Goal: keep ≥ 98% of true pairs with a manageable number of candidates per S1 entity</li>
+      <li>Output: <code>candidate_pairs.tsv</code></li>
+    </ul></div>
+    <div class="card"><h4>4 · Features</h4><ul>
+      <li>Name: Jaro-Winkler, token-set ratio, TF-IDF cosine, best match across aliases, legal-form conflict</li>
+      <li>Address: house-number agree/conflict, postcode, state, street similarity</li>
+      <li>Context: rank of the candidate within its group, gap to the best candidate</li>
+    </ul></div>
+    <div class="card"><h4>5 · Model</h4><ul>
+      <li>LightGBM on the pair features, cross-validated by S1 entity</li>
+      <li>Optional upgrade: a fine-tuned multilingual cross-encoder (small, Apache/MIT) whose score is fed in as a feature</li>
+    </ul></div>
+    <div class="card"><h4>6 · Decisions for F0.5</h4><ul>
+      <li>Each S2/S3 record goes to at most one S1 entity (from section 3)</li>
+      <li>Per entity, keep only the candidates that maximize expected F0.5; predict empty if nothing is confident</li>
+      <li>Run <code>validate_submission.py</code>, then upload</li>
+    </ul></div>
+  </div>
+</section>
+
+</div>
+<div id="tip"></div>
+</div>
+
+<script>
+// ---- data ----
+const rows = [
+  ["train S1", 2.206821], ["train S2", 5.034616], ["train S3", 5.285603],
+  ["test S1", 1.732544], ["test S2", 4.887273], ["test S3", 5.082316]
+];
+const hist = [[0,123247],[1,119157],[2,375212],[3,530841],[4,484115],[5,321957],[6,164868],[7,63968],[8,18680],[9,4205],[10,534],[11,37]];
+const proof = [
+  ["Name, raw", 84.6, 32.2], ["Name, cleaned", 92.2, 28.7],
+  ["Address, raw", 85.2, 41.8], ["Address, cleaned", 92.5, 37.8],
+];
+const tip = document.getElementById("tip");
+function bindTip(el, text) {
+  el.addEventListener("mousemove", e => { tip.textContent = text; tip.style.opacity = 1;
+    tip.style.left = (e.clientX + 12) + "px"; tip.style.top = (e.clientY + 12) + "px"; });
+  el.addEventListener("mouseleave", () => tip.style.opacity = 0);
+}
+// rows per file
+(() => {
+  const el = document.getElementById("rows"), max = 5.5;
+  rows.forEach(([k, v]) => {
+    const lab = document.createElement("div"); lab.className = "lab"; lab.textContent = k;
+    const tr = document.createElement("div"); tr.className = "track hit";
+    const b = document.createElement("div"); b.className = "bar"; b.style.width = (v / max * 100) + "%"; tr.appendChild(b);
+    const val = document.createElement("div"); val.className = "val"; val.textContent = v.toFixed(2) + "M";
+    bindTip(tr, `${k}: ${Math.round(v * 1e6).toLocaleString()} rows`);
+    el.append(lab, tr, val);
+  });
+})();
+// country stacks (3 categories -> slots 1..3 validated all-pairs)
+(() => {
+  const css = getComputedStyle(document.querySelector(".viz-root"));
+  const cols = { US: "var(--series-1)", India: "var(--series-2)", France: "var(--series-3)" };
+  const mk = (id, d) => {
+    const el = document.getElementById(id), tot = Object.values(d).reduce((a, b) => a + b, 0);
+    Object.entries(d).forEach(([k, v]) => { if (!v) return;
+      const s = document.createElement("div"); const p = v / tot * 100;
+      s.style.width = p + "%"; s.style.background = cols[k]; s.textContent = p >= 10 ? `${k} ${p.toFixed(0)}%` : "";
+      bindTip(s, `${k}: ${v.toLocaleString()} (${p.toFixed(1)}%)`); el.appendChild(s); });
+  };
+  mk("stackTrain", { US: 3170056, India: 2115547, France: 0 });
+  mk("stackTest", { US: 1945701, India: 2405000, France: 731615 });
+  document.getElementById("countryLegend").innerHTML =
+    Object.entries(cols).map(([k, c]) => `<span><i style="background:${c}"></i>${k}</span>`).join("");
+})();
+// histogram
+(() => {
+  const el = document.getElementById("hist"), x = document.getElementById("histx"), t = document.getElementById("histTable");
+  const tot = hist.reduce((a, [, v]) => a + v, 0), max = 25;
+  [0, 10, 20].forEach(g => { const l = document.createElement("div"); l.className = "gline"; l.style.bottom = (g / max * 100) + "%"; el.appendChild(l); });
+  t.innerHTML = "<tr><th>Matches</th><th class='num'>Entities</th><th class='num'>Share</th></tr>";
+  hist.forEach(([k, v]) => {
+    const p = v / tot * 100;
+    const c = document.createElement("div"); c.className = "col";
+    const top = document.createElement("div"); top.className = "top"; top.textContent = p >= 1 ? p.toFixed(1) + "%" : "";
+    const b = document.createElement("div"); b.className = "bar"; b.style.height = (p / max * 100) + "%";
+    c.append(top, b); bindTip(c, `${k} matches: ${v.toLocaleString()} entities (${p.toFixed(2)}%)`); el.appendChild(c);
+    const s = document.createElement("span"); s.textContent = k; x.appendChild(s);
+    t.innerHTML += `<tr><td>${k}</td><td class="num">${v.toLocaleString()}</td><td class="num">${p.toFixed(2)}%</td></tr>`;
+  });
+  const cap = document.createElement("span"); x.insertAdjacentHTML("afterend", "<div class='note' style='text-align:center'>number of matching S2 + S3 records</div>");
+})();
+// match vs non-match paired bars
+(() => {
+  const el = document.getElementById("proofChart");
+  proof.forEach(([k, m, n]) => {
+    const g = document.createElement("div"); g.className = "pair";
+    g.innerHTML = `<div class="lab">${k}</div>
+      <div class="track"><div class="bar b1" style="width:${m}%"></div></div><div class="val">${m.toFixed(1)}</div>
+      <div class="track"><div class="bar b2" style="width:${n}%"></div></div><div class="val">${n.toFixed(1)}</div>`;
+    const [t1, t2] = g.querySelectorAll(".track");
+    bindTip(t1, `${k}: true matches average ${m}`); bindTip(t2, `${k}: non-matches average ${n}`);
+    el.appendChild(g);
+  });
+})();
+// theme toggle
+document.getElementById("themebtn").onclick = () => {
+  const r = document.documentElement, dark = r.dataset.theme === "dark" ||
+    (!r.dataset.theme && matchMedia("(prefers-color-scheme: dark)").matches);
+  r.dataset.theme = dark ? "light" : "dark";
+};
+</script>
+</body>
+</html>
