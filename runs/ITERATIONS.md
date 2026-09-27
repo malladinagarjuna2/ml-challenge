@@ -95,4 +95,10 @@ Remaining loss 0.0193: model/decision ~0.014, blocking ~0.005.
 | Run | Validation F0.5 | Leaderboard | Gap |
 |---|---|---|---|
 | 01 | 0.9649 | **0.958** | −0.007 (test includes France, unseen in training) |
-| 02 | 0.9807 | first upload truncated by the portal at ~48 MB of 96.8 MB (upload interrupted; run 01's 93 MB file was accepted) → re-upload | |
+| 02 | 0.9807 | **0.972** (after re-upload; first upload was cut off at ~48 MB) | −0.009 |
+
+### Why 0.972 vs the top 0.992 (measured 2026-09-27)
+- Validation loss 0.0193: model rejects 228k true matches that are on the shortlist (~0.014); blocking misses 122k (~0.005); wrong IDs only 31k.
+- **France inferred ≈ 0.93** in both runs (0.934 / 0.928), assuming India/US score on test as in validation, weighted by test sizes.
+  Consistent with certainty: uncertain test pairs France 0.82% vs India 0.55% / US 0.61%. Costs ~0.008 overall (France = 15% of test).
+- Next: multilingual cross-encoder on uncertain pairs (GPU); France self-training on confident pairs; blocking recall toward 99%.
