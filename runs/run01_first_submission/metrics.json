@@ -38,7 +38,7 @@
   "mean_matches": 3.17,
   "candidate_pairs": 69301712,
   "validator": "PASS",
-  "leaderboard_score": null
+  "leaderboard_score": 0.958
  },
  "known_issues": [
   "random S1 sample for training -> over-cautious model (recall 92.3%)",

@@ -90,3 +90,9 @@ Stage-2 OOF AUC 0.99982 · AP 0.99835 · decision: expected-F0.5 + one-to-one.
 **Validation on all 2,206,821 train S1: F0.5 0.9807** (run 01: 0.9649, **+0.0158**) · precision **0.9958** (0.9899) · recall **0.9542** (0.9230)
 · India **0.9769** (0.9544) · US **0.9832** (0.9718) · singletons 0.9767 (0.9436) · non-singletons 0.9809 · blocking recall 0.9841 · ceiling on the same shortlist 0.9947.
 Remaining loss 0.0193: model/decision ~0.014, blocking ~0.005.
+
+### Leaderboard
+| Run | Validation F0.5 | Leaderboard | Gap |
+|---|---|---|---|
+| 01 | 0.9649 | **0.958** | −0.007 (test includes France, unseen in training) |
+| 02 | 0.9807 | first upload truncated by the portal at ~48 MB of 96.8 MB (upload interrupted; run 01's 93 MB file was accepted) → re-upload | |
