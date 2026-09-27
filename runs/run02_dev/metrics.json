@@ -1,0 +1,22 @@
+{
+ "run": "run02_dev",
+ "validation": {
+  "f05": 0.9727440546448847,
+  "precision": 0.9934706696696076,
+  "recall": 0.9432085687382298,
+  "oracle_same_shortlist": 0.9956739636720044,
+  "blocking_recall": 0.9906622724419335,
+  "singletons": 0.9508771929824561,
+  "non_singletons": 0.974085628031895,
+  "f05_india": 0.0,
+  "f05_us": 0.9735338867482569
+ },
+ "decision": "('expected', True, None, np.float64(0.9727440546448847))",
+ "train_rows_rule": "all positives + negatives rank<15 + 10% rest (weighted)",
+ "test": {
+  "s1": 75664,
+  "non_empty": 0.9500555085641784,
+  "mean_matches": 3.3201390357369425,
+  "pairs": 3026553
+ }
+}

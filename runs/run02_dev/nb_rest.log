@@ -1,0 +1,40 @@
+
+===== cell 8 =====
+[13:37:57 +  2674s]    train stage B [india]: 480 pairs (0s)
+[13:38:00 +  2677s]    train stage B [us]: 591,160 pairs (3s)
+[13:38:17 +  2693s]    test stage B [france]: 2,909,353 pairs (16s)
+[13:38:17 +  2694s]    test stage B [india]: 280 pairs (0s)
+[13:38:18 +  2695s]    test stage B [us]: 116,920 pairs (1s)
+[13:38:19 +  2696s] stage B done
+----- cell 8 ok in 22s
+
+===== cell 9 =====
+[13:38:20 +  2697s] stage-1 training rows: 259,271 (pos 50,500) x 92 features
+[13:38:31 +  2708s]    fold 0: best_it=138 (11s)
+[13:38:42 +  2718s]    fold 1: best_it=145 (11s)
+[13:38:53 +  2730s]    fold 2: best_it=154 (12s)
+[13:39:11 +  2748s] stage-1 OOF AUC=0.99952 AP=0.99615
+----- cell 9 ok in 52s
+
+===== cell 10 =====
+[13:42:47 +  2964s]    train stage-2 features [india] (1s)
+[13:42:50 +  2967s]    train stage-2 features [us] (2s)
+[13:46:33 +  3190s]    test stage-2 features [france] (9s)
+[13:46:34 +  3191s]    test stage-2 features [india] (0s)
+[13:46:35 +  3192s]    test stage-2 features [us] (0s)
+[13:46:48 +  3205s]    fold 0: best_it=80 (9s)
+[13:46:56 +  3213s]    fold 1: best_it=83 (9s)
+[13:47:05 +  3222s]    fold 2: best_it=83 (9s)
+[13:47:27 +  3244s] stage-2 OOF AUC=0.99949 AP=0.99588
+----- cell 10 ok in 497s
+
+===== cell 11 =====
+[13:47:28 +  3245s] thresh   one2one=False: 0.97201 @ (0.8, 0.8)
+[13:47:28 +  3245s] expected one2one=False: 0.97270
+[13:47:28 +  3245s] thresh   one2one=True: 0.97201 @ (0.8, 0.8)
+[13:47:29 +  3246s] expected one2one=True: 0.97274
+[13:47:29 +  3246s] BEST decision rule: ('expected', True, None, np.float64(0.9727440546448847))
+[13:47:30 +  3246s] VALIDATION (OOF, all train S1): {'f05': 0.9727, 'precision': 0.9935, 'recall': 0.9432, 'oracle_same_shortlist': 0.9957, 'blocking_recall': 0.9907, 'singletons': 0.9509, 'non_singletons': 0.9741, 'f05_india': 0.0, 'f05_us': 0.9735}
+----- cell 11 ok in 2s
+
+===== cell 12 =====

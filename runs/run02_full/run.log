@@ -1,0 +1,17 @@
+[14:17:23 +     0s] run02 start | DEV = False | run dir C:/Users/malla/ml_challenghe/runs/run02_full
+[14:17:48 +    25s] loaded v2 cache {'train_s1': 2206821, 'train_s2': 5034616, 'train_s3': 5285603, 'test_s1': 1732544, 'test_s2': 4887273, 'test_s3': 5082316}
+[14:17:54 +    31s] Indic-script S2/S3 names in train: 752,869 | true pairs among them: 551,240 | share with a common name word BEFORE: 0.994
+[14:17:54 +    31s] transliteration table: 503 word mappings, e.g. {'intrneshnl': 'intl', 'tek': 'tech', 'phuds': 'fods', 'enrji': 'energy', 'sistms': 'systems', 'knsltensi': 'consultancy', 'globl': 'global', 'treding': 'trading'}
+[14:18:18 +    56s] share of Indic true pairs with a common name word AFTER: 0.994
+[14:19:20 +   117s] generated-name model: 209,315 generated words, e.g. ['earnosethroat', 'earnose', 'revitup', 'fotankle', 'womenshealth', 'primarycare', 'urgentcare', 'mainstret']
+[14:19:20 +   117s]    scores: {'zephzeph': 2.38, 'brixumbra': 1.37, 'miralyrafaye': 1.5, 'barbershop': -0.1, 'finance': 0.01, 'logistics': 0.22, 'ecole': 0.05}
+[14:22:18 +   295s] train: whole-data row statistics added (178s)
+[14:23:32 +   369s] test: whole-data row statistics added (74s)
+[14:23:32 +   369s] {'train': 'L=2,206,821 R=10,320,219', 'test': 'L=1,732,544 R=9,969,589'}
+[14:23:32 +   369s] blocking functions defined
+[14:23:32 +   369s] feature functions defined
+[14:23:51 +   388s] train: 23 chunks, 23 to do
+[14:25:36 +   493s]    view v_name_c: vocab=169,533 (97s)
+[14:27:57 +   634s]    view v_addr_c: vocab=177,039 (141s)
+[14:30:29 +   786s]    view v_all_w: vocab=3,776,069 (152s)
+[14:34:13 +  1010s]    view v_phon_c: vocab=146,113 (224s)

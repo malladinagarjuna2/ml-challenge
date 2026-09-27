@@ -1,0 +1,27 @@
+
+===== cell 5 =====
+[13:06:04 +   761s] blocking functions defined
+----- cell 5 ok in 0s
+
+===== cell 6 =====
+[13:06:04 +   761s] feature functions defined
+----- cell 6 ok in 0s
+
+===== cell 7 =====
+[13:06:06 +   763s] train: 2 chunks, 2 to do
+[13:07:28 +   845s]    view v_name_c: vocab=169,533 (78s)
+[13:09:49 +   986s]    view v_addr_c: vocab=177,039 (141s)
+[13:11:59 +  1116s]    view v_all_w: vocab=3,776,069 (130s)
+[13:15:19 +  1316s]    view v_phon_c: vocab=146,113 (201s)
+[13:19:37 +  1574s]    train A_0000 [india] S1=12 pairs=480 pos=0 (21s)
+[13:20:09 +  1606s]    train A_0001 [us] S1=14,779 pairs=591,160 pos=50,500 (32s)
+[13:20:13 +  1610s] test: 3 chunks, 3 to do
+[13:21:19 +  1676s]    view v_name_c: vocab=163,210 (62s)
+[13:23:41 +  1818s]    view v_addr_c: vocab=178,333 (142s)
+[13:25:50 +  1947s]    view v_all_w: vocab=3,427,983 (130s)
+[13:28:49 +  2126s]    view v_phon_c: vocab=143,094 (179s)
+[13:34:42 +  2479s]    test A_0000 [france] S1=72,734 pairs=2,909,353 (110s)
+[13:35:04 +  2501s]    test A_0001 [india] S1=7 pairs=280 (22s)
+[13:35:26 +  2523s]    test A_0002 [us] S1=2,923 pairs=116,920 (21s)
+[13:35:32 +  2529s] train blocking recall (top 40): 0.9907  (50,500/50,976)
+----- cell 7 ok in 1768s

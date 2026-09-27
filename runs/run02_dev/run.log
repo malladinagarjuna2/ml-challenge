@@ -1,0 +1,98 @@
+[12:53:23 +     0s] run02 start | DEV = True | run dir C:/Users/malla/ml_challenghe/runs/run02_dev
+[12:53:43 +    20s] loaded run-01 cache {'train_s1': 2206821, 'train_s2': 5034616, 'train_s3': 5285603, 'test_s1': 1732544, 'test_s2': 4887273, 'test_s3': 5082316}
+[12:54:25 +    61s] Indic-script S2/S3 names in train: 752,869 | true pairs among them: 551,240 | share with a common name word BEFORE: 0.289
+[12:54:29 +    66s] transliteration table: 503 word mappings, e.g. {'intrneshnl': 'intl', 'tek': 'tech', 'phuds': 'fods', 'enrji': 'energy', 'sistms': 'systems', 'knsltensi': 'consultancy', 'globl': 'global', 'treding': 'trading'}
+[12:54:39 +    76s]    ('train', 2): transliteration applied to 474,345 Indic-script names
+[12:54:45 +    82s]    ('train', 3): transliteration applied to 278,524 Indic-script names
+[12:54:56 +    93s]    ('test', 2): transliteration applied to 546,606 Indic-script names
+[12:55:03 +   100s]    ('test', 3): transliteration applied to 320,639 Indic-script names
+[12:55:26 +   123s] share of Indic true pairs with a common name word AFTER: 0.994
+[12:55:48 +   145s] France: 12,690 cities mapped to a region (learned from S1)
+[12:56:00 +   157s]    ('test', 1): France records with a region: 1.000
+[12:56:07 +   164s]    ('test', 2): France records with a region: 0.969
+[12:56:15 +   172s]    ('test', 3): France records with a region: 0.971
+[12:57:18 +   235s] v2 cache written
+[12:58:27 +   303s] generated-name model: 375,499 generated words, e.g. ['earnosethroat', 'earnose', 'revitup', 'fotankle', 'physicaltherapy', 'behavioralhealth', 'womenshealth', 'internalmedicine']
+[12:58:27 +   303s]    scores: {'zephzeph': 1.62, 'brixumbra': 0.72, 'miralyrafaye': 0.92, 'barbershop': -0.08, 'finance': 0.15, 'logistics': 0.71, 'ecole': -0.06}
+[12:59:49 +   386s] train: whole-data row statistics added (83s)
+[13:01:00 +   457s] test: whole-data row statistics added (71s)
+[13:01:01 +   458s] {'train': 'L=14,791 R=10,320,219', 'test': 'L=75,664 R=9,969,589'}
+[13:01:46 +   503s] loaded v2 cache {'train_s1': 2206821, 'train_s2': 5034616, 'train_s3': 5285603, 'test_s1': 1732544, 'test_s2': 4887273, 'test_s3': 5082316}
+[13:01:54 +   511s] Indic-script S2/S3 names in train: 752,869 | true pairs among them: 551,240 | share with a common name word BEFORE: 0.994
+[13:01:54 +   511s] transliteration table: 503 word mappings, e.g. {'intrneshnl': 'intl', 'tek': 'tech', 'phuds': 'fods', 'enrji': 'energy', 'sistms': 'systems', 'knsltensi': 'consultancy', 'globl': 'global', 'treding': 'trading'}
+[13:02:23 +   540s] share of Indic true pairs with a common name word AFTER: 0.994
+[13:03:30 +   607s] generated-name model: 209,315 generated words, e.g. ['earnosethroat', 'earnose', 'revitup', 'fotankle', 'womenshealth', 'primarycare', 'urgentcare', 'mainstret']
+[13:03:30 +   607s]    scores: {'zephzeph': 2.38, 'brixumbra': 1.37, 'miralyrafaye': 1.5, 'barbershop': -0.1, 'finance': 0.01, 'logistics': 0.22, 'ecole': 0.05}
+[13:04:54 +   691s] train: whole-data row statistics added (84s)
+[13:05:54 +   751s] test: whole-data row statistics added (60s)
+[13:05:55 +   752s] {'train': 'L=14,791 R=10,320,219', 'test': 'L=75,664 R=9,969,589'}
+[13:06:04 +   761s] blocking functions defined
+[13:06:04 +   761s] feature functions defined
+[13:06:06 +   763s] train: 2 chunks, 2 to do
+[13:07:28 +   845s]    view v_name_c: vocab=169,533 (78s)
+[13:09:49 +   986s]    view v_addr_c: vocab=177,039 (141s)
+[13:11:59 +  1116s]    view v_all_w: vocab=3,776,069 (130s)
+[13:15:19 +  1316s]    view v_phon_c: vocab=146,113 (201s)
+[13:19:37 +  1574s]    train A_0000 [india] S1=12 pairs=480 pos=0 (21s)
+[13:20:09 +  1606s]    train A_0001 [us] S1=14,779 pairs=591,160 pos=50,500 (32s)
+[13:20:13 +  1610s] test: 3 chunks, 3 to do
+[13:21:19 +  1676s]    view v_name_c: vocab=163,210 (62s)
+[13:23:41 +  1818s]    view v_addr_c: vocab=178,333 (142s)
+[13:25:50 +  1947s]    view v_all_w: vocab=3,427,983 (130s)
+[13:28:49 +  2126s]    view v_phon_c: vocab=143,094 (179s)
+[13:34:42 +  2479s]    test A_0000 [france] S1=72,734 pairs=2,909,353 (110s)
+[13:35:04 +  2501s]    test A_0001 [india] S1=7 pairs=280 (22s)
+[13:35:26 +  2523s]    test A_0002 [us] S1=2,923 pairs=116,920 (21s)
+[13:35:32 +  2529s] train blocking recall (top 40): 0.9907  (50,500/50,976)
+[13:37:57 +  2674s]    train stage B [india]: 480 pairs (0s)
+[13:38:00 +  2677s]    train stage B [us]: 591,160 pairs (3s)
+[13:38:17 +  2693s]    test stage B [france]: 2,909,353 pairs (16s)
+[13:38:17 +  2694s]    test stage B [india]: 280 pairs (0s)
+[13:38:18 +  2695s]    test stage B [us]: 116,920 pairs (1s)
+[13:38:19 +  2696s] stage B done
+[13:38:20 +  2697s] stage-1 training rows: 259,271 (pos 50,500) x 92 features
+[13:38:31 +  2708s]    fold 0: best_it=138 (11s)
+[13:38:42 +  2718s]    fold 1: best_it=145 (11s)
+[13:38:53 +  2730s]    fold 2: best_it=154 (12s)
+[13:39:11 +  2748s] stage-1 OOF AUC=0.99952 AP=0.99615
+[13:42:47 +  2964s]    train stage-2 features [india] (1s)
+[13:42:50 +  2967s]    train stage-2 features [us] (2s)
+[13:46:33 +  3190s]    test stage-2 features [france] (9s)
+[13:46:34 +  3191s]    test stage-2 features [india] (0s)
+[13:46:35 +  3192s]    test stage-2 features [us] (0s)
+[13:46:48 +  3205s]    fold 0: best_it=80 (9s)
+[13:46:56 +  3213s]    fold 1: best_it=83 (9s)
+[13:47:05 +  3222s]    fold 2: best_it=83 (9s)
+[13:47:27 +  3244s] stage-2 OOF AUC=0.99949 AP=0.99588
+[13:47:28 +  3245s] thresh   one2one=False: 0.97201 @ (0.8, 0.8)
+[13:47:28 +  3245s] expected one2one=False: 0.97270
+[13:47:28 +  3245s] thresh   one2one=True: 0.97201 @ (0.8, 0.8)
+[13:47:29 +  3246s] expected one2one=True: 0.97274
+[13:47:29 +  3246s] BEST decision rule: ('expected', True, None, np.float64(0.9727440546448847))
+[13:47:30 +  3246s] VALIDATION (OOF, all train S1): {'f05': 0.9727, 'precision': 0.9935, 'recall': 0.9432, 'oracle_same_shortlist': 0.9957, 'blocking_recall': 0.9907, 'singletons': 0.9509, 'non_singletons': 0.9741, 'f05_india': 0.0, 'f05_us': 0.9735}
+[14:11:52 +     0s] run02 start | DEV = True | run dir C:/Users/malla/ml_challenghe/runs/run02_dev
+[14:12:13 +    21s] loaded v2 cache {'train_s1': 2206821, 'train_s2': 5034616, 'train_s3': 5285603, 'test_s1': 1732544, 'test_s2': 4887273, 'test_s3': 5082316}
+[14:12:21 +    29s] Indic-script S2/S3 names in train: 752,869 | true pairs among them: 551,240 | share with a common name word BEFORE: 0.994
+[14:12:21 +    29s] transliteration table: 503 word mappings, e.g. {'intrneshnl': 'intl', 'tek': 'tech', 'phuds': 'fods', 'enrji': 'energy', 'sistms': 'systems', 'knsltensi': 'consultancy', 'globl': 'global', 'treding': 'trading'}
+[14:12:44 +    52s] share of Indic true pairs with a common name word AFTER: 0.994
+[14:13:50 +   117s] generated-name model: 209,315 generated words, e.g. ['earnosethroat', 'earnose', 'revitup', 'fotankle', 'womenshealth', 'primarycare', 'urgentcare', 'mainstret']
+[14:13:50 +   117s]    scores: {'zephzeph': 2.38, 'brixumbra': 1.37, 'miralyrafaye': 1.5, 'barbershop': -0.1, 'finance': 0.01, 'logistics': 0.22, 'ecole': 0.05}
+[14:15:04 +   192s] train: whole-data row statistics added (74s)
+[14:16:18 +   266s] test: whole-data row statistics added (74s)
+[14:16:19 +   267s] {'train': 'L=14,791 R=10,320,219', 'test': 'L=75,664 R=9,969,589'}
+[14:16:19 +   267s] blocking functions defined
+[14:16:19 +   267s] feature functions defined
+[14:16:22 +   269s] train: 2 chunks, 0 to do
+[14:16:24 +   272s] test: 3 chunks, 0 to do
+[14:16:30 +   277s] train blocking recall (top 40): 0.9907  (50,500/50,976)
+[14:16:30 +   277s] stage B done
+[14:16:30 +   278s] stage-1 models loaded from disk
+[14:16:30 +   278s] stage-1 OOF AUC=0.99952 AP=0.99615
+[14:16:31 +   279s] stage-2 OOF AUC=0.99949 AP=0.99588
+[14:16:31 +   279s] thresh   one2one=False: 0.97201 @ (0.8, 0.8)
+[14:16:32 +   280s] expected one2one=False: 0.97270
+[14:16:33 +   280s] thresh   one2one=True: 0.97201 @ (0.8, 0.8)
+[14:16:33 +   281s] expected one2one=True: 0.97274
+[14:16:33 +   281s] BEST decision rule: ('expected', True, None, np.float64(0.9727440546448847))
+[14:16:34 +   281s] VALIDATION (OOF, all train S1): {'f05': 0.9727, 'precision': 0.9935, 'recall': 0.9432, 'oracle_same_shortlist': 0.9957, 'blocking_recall': 0.9907, 'singletons': 0.9509, 'non_singletons': 0.9741, 'f05_india': 0.0, 'f05_us': 0.9735}
+[14:16:38 +   286s] WROTE C:/Users/malla/ml_challenghe/output_dev: S1=75,664 non-empty=0.950 mean matches=3.32

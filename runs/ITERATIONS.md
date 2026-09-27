@@ -58,3 +58,17 @@ Code verified end to end (stage outputs saved per chunk). Transliteration: Indic
 DEV validation (tiny training set, not comparable): F0.5 0.9727 · precision 0.9935 · recall 0.9432 · blocking recall 0.9907 · oracle 0.9957.
 | M13 | Output writer indexed pandas-3 Arrow string arrays row by row (`ids_r[list]` per S1) | 20 min for 75k DEV rows → would be 7+ h for the full test set | convert ID columns to numpy object arrays once |
 | M12 | Output writer indexed pandas-3 Arrow string arrays (`.values`) row by row | 13 min for 75k DEV rows → ~5 h for the full test | convert IDs to NumPy once (`to_numpy(dtype=object)`) |
+| M13 | State detection scanned components from the end and accepted a 2-letter code at the end of a later component before a full state name at the start (`Delhi, …, Turkman Ga, Te, …` → "ga" = Goa) | S1 put in the wrong state partition → blocking can never reach its matches (DEV India F0.5 = 0; also in run 01) | two passes: full state name as a whole component first (anywhere), codes only as fallback |
+| M14 | My first fix for M13 ("full state name first, anywhere") was too broad: city names like `Washington, DC` and mentions of neighbouring states were read as the state | measured: state agreement 0.9988 → 0.9974, unreachable S1 873 → 1,153 (worse) | reverted from the untouched run-01 cache; replaced by a narrow rule, kept only if it measures better |
+
+**Result of the M13/M14 work:** narrow rule (override only when the detected state is not backed by any whole address component)
+measured on all 7.6M true pairs: S1 cut off from all their matches **873 → 803** (0.042% → 0.039%), agreement 0.9988 → 0.9989 → kept.
+Lesson: the DEV India score of 0 came from a tiny, unlucky sample (Goa/Himachal partitions are dominated by misassigned records);
+the bug is real but small. Always size a bug on the full data before fixing it.
+
+### Run 02 DEV check (small complete US states + Goa/Himachal, France Pays de la Loire)
+- Transliteration table: 503 mappings; Indic-script true pairs sharing a name word **0.289 → 0.994** (in-sample, somewhat optimistic).
+- Generated-name model (after M11): fake names score 1.4–2.4, real words ≤ 0.22.
+- France: 97% of S2/S3 records get a region; 72,734 French S1 blocked in 110 s (run 01: 60 min for 259k).
+- DEV validation (15k S1, weak because each fold trains on ~10k): F0.5 0.9727, precision 0.9935, recall 0.9432, blocking recall 0.9907.
+- Pipeline resumes from saved stages in seconds; output writing 4 s (was 25+ min, M12).
