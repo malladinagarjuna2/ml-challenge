@@ -56,7 +56,6 @@ Planned changes:
 Code verified end to end (stage outputs saved per chunk). Transliteration: Indic true pairs sharing a name word 28.9% → 99.4%
 (in-sample). France: 97% of S2/S3 records get a region (3 partitions). Generated-name score separates fake (1.4–2.4) from real (≤0.22).
 DEV validation (tiny training set, not comparable): F0.5 0.9727 · precision 0.9935 · recall 0.9432 · blocking recall 0.9907 · oracle 0.9957.
-| M13 | Output writer indexed pandas-3 Arrow string arrays row by row (`ids_r[list]` per S1) | 20 min for 75k DEV rows → would be 7+ h for the full test set | convert ID columns to numpy object arrays once |
 | M12 | Output writer indexed pandas-3 Arrow string arrays (`.values`) row by row | 13 min for 75k DEV rows → ~5 h for the full test | convert IDs to NumPy once (`to_numpy(dtype=object)`) |
 | M13 | State detection scanned components from the end and accepted a 2-letter code at the end of a later component before a full state name at the start (`Delhi, …, Turkman Ga, Te, …` → "ga" = Goa) | S1 put in the wrong state partition → blocking can never reach its matches (DEV India F0.5 = 0; also in run 01) | two passes: full state name as a whole component first (anywhere), codes only as fallback |
 | M14 | My first fix for M13 ("full state name first, anywhere") was too broad: city names like `Washington, DC` and mentions of neighbouring states were read as the state | measured: state agreement 0.9988 → 0.9974, unreachable S1 873 → 1,153 (worse) | reverted from the untouched run-01 cache; replaced by a narrow rule, kept only if it measures better |
@@ -72,3 +71,22 @@ the bug is real but small. Always size a bug on the full data before fixing it.
 - France: 97% of S2/S3 records get a region; 72,734 French S1 blocked in 110 s (run 01: 60 min for 259k).
 - DEV validation (15k S1, weak because each fold trains on ~10k): F0.5 0.9727, precision 0.9935, recall 0.9432, blocking recall 0.9907.
 - Pipeline resumes from saved stages in seconds; output writing 4 s (was 25+ min, M12).
+| M15 | `git add -A` committed files I did not create (`Amazon-ML-Challenge/` repo, `runs/hard_pairs_*`) | foreign files in my commit | removed from the commit (kept on disk); stage files explicitly from now on |
+| M16 | Stopped *all* Jupyter kernels to free a stuck one | also killed a concurrent full run 02 started by someone else at 14:17 | stop only the process ID I started; check for other runs first |
+
+> **Numbering note:** two Claude sessions appended to this log in parallel on 2026-09-27. The output-writer bug appears once (M12); the too-small India DEV states (Goa/Himachal, 12 S1) turned out to be caused by the state bug M13. M16: the second session stopped the first session's full run at 14:34; it was restarted at 14:50 on the corrected cache.
+
+### Run 02 full: stage A train (2026-09-27 14:53–16:24)
+23 chunks, 2,206,821 S1, 88,272,765 candidate pairs. **Blocking recall (top 40): 0.9841** (run 01: 0.9762) · India 0.9724 (0.965) · US 0.9919 (0.996, sampled).
+Open question Q1: US recall slightly below run 01's sampled estimate. Check after the run whether the state fix / partitions moved US S1 away from their matches.
+
+### Run 02 full: stage A test + stage B done (18:56). Test: 18 chunks, 69.3M pairs; France 3 chunks in ~10 min (run 01: 60 min).
+| M17 | Training matrix built by stacking chunk pieces (`np.vstack`) and then re-ordering by fold (`X[o]`) = 3 copies of a 14 GB matrix | would exceed RAM + page file (~42 GB extra on top of 40 GB) | preallocate once, write each chunk straight into its fold-sorted rows; kernel restarted, stages A/B reused from disk |
+Stage-1 (3 folds, 38.7M rows, ~2,000–2,300 trees each on GPU): OOF AUC **0.99979** (run 01: 0.99953) · AP **0.99805** (run 01: 0.99580) → ranking error halved.
+| M18 | Ran notebook cells 0–11, but the output/validation cell is 12 | run finished without writing the test file | ran cell 12 separately (kernel still had everything loaded) |
+
+### Run 02 full — RESULT (2026-09-27 22:10)
+Stage-2 OOF AUC 0.99982 · AP 0.99835 · decision: expected-F0.5 + one-to-one.
+**Validation on all 2,206,821 train S1: F0.5 0.9807** (run 01: 0.9649, **+0.0158**) · precision **0.9958** (0.9899) · recall **0.9542** (0.9230)
+· India **0.9769** (0.9544) · US **0.9832** (0.9718) · singletons 0.9767 (0.9436) · non-singletons 0.9809 · blocking recall 0.9841 · ceiling on the same shortlist 0.9947.
+Remaining loss 0.0193: model/decision ~0.014, blocking ~0.005.
