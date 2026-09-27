@@ -1,0 +1,463 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Business Entity Resolution — everything done so far</title>
+<style>
+.viz-root {
+  color-scheme: light;
+  --page:#f4f3f0; --surface-1:#fcfcfb; --surface-2:#efeee9; --border:#dddcd5;
+  --text-primary:#0b0b0b; --text-secondary:#52514e; --text-muted:#7a7974;
+  --series-1:#2a78d6; --series-2:#eb6834; --series-3:#1baf7a; --grid:#e6e5df;
+  --good:#008300; --bad:#c2332f; --warn:#b36b00; --code-bg:#efeee9;
+}
+@media (prefers-color-scheme: dark) {
+  :root:where(:not([data-theme="light"])) .viz-root {
+    color-scheme: dark;
+    --page:#111110; --surface-1:#1a1a19; --surface-2:#242422; --border:#353532;
+    --text-primary:#fff; --text-secondary:#c3c2b7; --text-muted:#8f8e86;
+    --series-1:#3987e5; --series-2:#d95926; --series-3:#199e70; --grid:#2c2c2a;
+    --good:#3fae3f; --bad:#e66767; --warn:#e0a030; --code-bg:#242422;
+  }
+}
+:root[data-theme="dark"] .viz-root {
+  color-scheme: dark;
+  --page:#111110; --surface-1:#1a1a19; --surface-2:#242422; --border:#353532;
+  --text-primary:#fff; --text-secondary:#c3c2b7; --text-muted:#8f8e86;
+  --series-1:#3987e5; --series-2:#d95926; --series-3:#199e70; --grid:#2c2c2a;
+  --good:#3fae3f; --bad:#e66767; --warn:#e0a030; --code-bg:#242422;
+}
+*{box-sizing:border-box} body{margin:0}
+.viz-root{background:var(--page);color:var(--text-primary);font:15px/1.55 system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;min-height:100vh}
+.wrap{max-width:1080px;margin:0 auto;padding:28px 22px 90px}
+header h1{font-size:28px;margin:0 0 4px} header p{margin:0;color:var(--text-secondary)}
+.toc{display:flex;flex-wrap:wrap;gap:8px;margin:16px 0 6px}
+.toc a{font-size:13px;color:var(--text-secondary);text-decoration:none;padding:4px 10px;border:1px solid var(--border);border-radius:999px;background:var(--surface-1)}
+.toc a:hover{color:var(--text-primary)}
+section{background:var(--surface-1);border:1px solid var(--border);border-radius:12px;padding:22px 24px;margin-top:18px}
+h2{font-size:20px;margin:0 0 4px} h2 .n{color:var(--text-muted);font-weight:500;margin-right:6px}
+h3{font-size:15px;margin:20px 0 8px}
+.lead{color:var(--text-secondary);margin:0 0 14px}
+code,pre{font-family:ui-monospace,"Cascadia Code",Consolas,monospace;font-size:13px}
+code{background:var(--code-bg);padding:1px 5px;border-radius:4px}
+pre{background:var(--code-bg);padding:12px 14px;border-radius:8px;overflow-x:auto;margin:8px 0}
+table{border-collapse:collapse;width:100%;font-size:14px}
+th,td{text-align:left;padding:7px 10px;border-bottom:1px solid var(--grid);vertical-align:top}
+th{color:var(--text-secondary);font-weight:600;font-size:13px}
+td.num,th.num{text-align:right;font-variant-numeric:tabular-nums}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+.grid4{display:grid;grid-template-columns:repeat(4,1fr);gap:12px}
+@media (max-width:780px){.grid2,.grid4{grid-template-columns:1fr}}
+.tile{background:var(--surface-2);border-radius:10px;padding:14px 16px}
+.tile .big{font-size:28px;font-weight:700;line-height:1.1;font-variant-numeric:tabular-nums}
+.tile .lbl{color:var(--text-secondary);font-size:13px;margin-top:4px}
+.card{background:var(--surface-2);border-radius:10px;padding:14px 16px}
+.card h4{margin:0 0 6px;font-size:14px} .card ul{margin:0;padding-left:18px}
+.note{color:var(--text-secondary);font-size:13px}
+.muted{color:var(--text-muted)}
+.ok{color:var(--good);font-weight:700} .no{color:var(--bad);font-weight:700} .wa{color:var(--warn);font-weight:700}
+.timeline{border-left:2px solid var(--border);margin:8px 0 0 8px;padding-left:18px}
+.timeline .ev{position:relative;margin-bottom:14px}
+.timeline .ev::before{content:"";position:absolute;left:-25px;top:6px;width:12px;height:12px;border-radius:50%;background:var(--series-1)}
+.timeline .ev.bad::before{background:var(--bad)} .timeline .ev.good::before{background:var(--good)}
+.timeline .ev b{display:block}
+.flow{display:flex;gap:6px;flex-wrap:wrap;margin:10px 0}
+.flow .box{flex:1 1 120px;background:var(--surface-2);border-radius:8px;padding:10px;font-size:13px}
+.flow .box b{display:block}
+.flow .arrow{align-self:center;color:var(--text-muted);font-size:18px}
+.hbars{display:grid;grid-template-columns:210px 1fr 80px;gap:6px 10px;align-items:center;font-size:13px}
+.hbars .lab{color:var(--text-secondary);text-align:right}
+.hbars .track{position:relative;height:18px}
+.hbars .bar{position:absolute;left:0;top:0;bottom:0;border-radius:0 4px 4px 0;min-width:2px;background:var(--series-1)}
+.hbars .val{font-variant-numeric:tabular-nums}
+.vbars{display:flex;align-items:flex-end;gap:3px;height:180px;border-bottom:1px solid var(--text-muted);padding:0 4px;position:relative}
+.vbars .col{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:flex-end;height:100%}
+.vbars .col .bar{width:74%;border-radius:4px 4px 0 0;min-height:2px;background:var(--series-2)}
+.vbars .col .top{font-size:11px;color:var(--text-secondary);margin-bottom:3px}
+.vx{display:flex;gap:3px;padding:4px 4px 0;font-size:11px;color:var(--text-secondary)} .vx span{flex:1;text-align:center}
+.gline{position:absolute;left:0;right:0;border-top:1px solid var(--grid)}
+svg text{fill:var(--text-secondary);font-size:11px}
+.legend{display:flex;gap:16px;font-size:13px;color:var(--text-secondary);margin:4px 0 10px}
+.legend i{display:inline-block;width:12px;height:12px;border-radius:3px;margin-right:6px;vertical-align:-1px}
+details{margin-top:8px} summary{cursor:pointer;color:var(--text-secondary);font-size:13px}
+#tip{position:fixed;pointer-events:none;background:var(--text-primary);color:var(--surface-1);font-size:12px;padding:6px 9px;border-radius:6px;opacity:0;transition:opacity .1s;z-index:9;max-width:300px}
+.themebtn{float:right;font-size:12px;background:var(--surface-1);color:var(--text-secondary);border:1px solid var(--border);border-radius:999px;padding:4px 10px;cursor:pointer}
+.rec{font-family:ui-monospace,Consolas,monospace;font-size:12.5px}
+</style>
+</head>
+<body>
+<div class="viz-root"><div class="wrap">
+
+<header>
+  <button class="themebtn" id="themebtn">Toggle dark / light</button>
+  <h1>Business Entity Resolution: everything done so far</h1>
+  <p>Amazon ML Challenge 2026 · from the first look at the data to the first validated submission, including what went wrong and what comes next.</p>
+  <nav class="toc">
+    <a href="#summary">Summary</a><a href="#timeline">1 · Timeline</a><a href="#data">2 · Data</a>
+    <a href="#prep">3 · Preprocessing</a><a href="#blocking">4 · Blocking</a><a href="#model">5 · Features &amp; model</a>
+    <a href="#decision">6 · Decision layer</a><a href="#results">7 · Results</a><a href="#why">8 · Why 0.965</a>
+    <a href="#errors">9 · Errors &amp; bottlenecks</a><a href="#saved">10 · What is saved</a><a href="#next">11 · Next</a>
+  </nav>
+</header>
+
+<!-- SUMMARY -->
+<section id="summary">
+  <h2>Summary</h2>
+  <p class="lead">A full pipeline was built, run on the complete data, and produced a submission that passes the official validator.
+  Validation shows exactly where the score is lost, and the fix is known.</p>
+  <div class="grid4">
+    <div class="tile"><div class="big">0.965</div><div class="lbl">validation macro F0.5 (200k held-out-style training entities, all decoys present)</div></div>
+    <div class="tile"><div class="big">99.0%</div><div class="lbl">precision: our predicted matches are almost always right</div></div>
+    <div class="tile"><div class="big">92.3%</div><div class="lbl">recall: we miss too many real matches, <b>the main problem</b></div></div>
+    <div class="tile"><div class="big">~0.99</div><div class="lbl">top of the leaderboard; a perfect model on our own shortlist would score 0.991</div></div>
+  </div>
+</section>
+
+<!-- TIMELINE -->
+<section id="timeline">
+  <h2><span class="n">1</span>Timeline: what happened, in order</h2>
+  <div class="timeline">
+    <div class="ev"><b>Understood the problem</b>Read the slides and the problem document: link every Source 1 business to its Source 2/3 records using only name and address; scored by macro F0.5 (precision counts double).</div>
+    <div class="ev"><b>Explored the data</b>2.2M / 10.3M training records, 7.6M labelled links. Found: 5.6% singletons, 3.46 matches on average, each S2/S3 record belongs to at most one S1, no match ever crosses countries, France only in test.</div>
+    <div class="ev"><b>Wrote the first cleaning rules</b> and measured them on true pairs; an audit found bugs in my own rules (US states FL/CT/MT/NE destroyed), which were fixed.</div>
+    <div class="ev"><b>Reviewed your Colab pipeline</b> and turned it into a notebook (<code>er_pipeline.ipynb</code>) run cell by cell; found and fixed 8 preprocessing bugs, added 29 automatic checks.</div>
+    <div class="ev good"><b>Cleaned all 23.4M rows</b> in 5 minutes (parallel) and cached them; state agreement on true pairs rose to 99.3%.</div>
+    <div class="ev bad"><b>First blocking was far too slow</b>: 18 minutes on a 10% sample, estimated 12–50 hours on the full data.</div>
+    <div class="ev good"><b>Redesigned blocking</b>: country + state groups, pruned n-grams, exact keys, reciprocal-rank fusion. Measured against all 10.3M records: 98.3% of true matches found.</div>
+    <div class="ev"><b>Moved model training to the GPU</b> (XGBoost, CUDA) at your request.</div>
+    <div class="ev good"><b>Full run finished</b>: validation F0.5 0.965; 1.73M test entities scored; official validator <b>PASS</b>; zip package built.</div>
+    <div class="ev"><b>Error analysis</b>: precision 99.0%, recall 92.3%; the model/decision step loses 0.026 of the 0.035.</div>
+    <div class="ev bad"><b>Kernel got stuck</b> on an inefficient analysis query; the trained models (kept only in memory) were lost. Outputs and data were safe.</div>
+    <div class="ev good"><b>Everything archived</b> in <code>runs/run01_first_submission/</code> and committed to a new local git repo (code only).</div>
+  </div>
+</section>
+
+<!-- DATA -->
+<section id="data">
+  <h2><span class="n">2</span>The data</h2>
+  <p class="lead">Four columns per record: <code>entity_id</code>, <code>business_name</code>, <code>business_address</code>, <code>country</code>. All files are tab-separated.</p>
+  <table>
+    <tr><th></th><th class="num">Source 1</th><th class="num">Source 2</th><th class="num">Source 3</th><th>Countries</th></tr>
+    <tr><td>Train</td><td class="num">2,206,821</td><td class="num">5,034,616</td><td class="num">5,285,603</td><td>US 60%, India 40%</td></tr>
+    <tr><td>Test</td><td class="num">1,732,544</td><td class="num">4,887,273</td><td class="num">5,082,316</td><td>India 47%, US 38%, <b>France 15%</b> (never in train)</td></tr>
+  </table>
+  <h3>Facts from the answers that shaped the design</h3>
+  <ul>
+    <li><b>0 of 7.6M</b> S2/S3 records belong to two S1 entities → a one-to-one rule is safe.</li>
+    <li><b>0 of 7.6M</b> links cross countries → everything can be done country by country.</li>
+    <li>About <b>26%</b> of S2/S3 records match nothing (decoys) → the source of false merges.</li>
+    <li>Some true links have <b>unrelated names</b> (<code>Straight Edge Ice Cream</code> ↔ <code>XYLOQUO</code>) → address-only matching must be possible.</li>
+  </ul>
+  <h3>One real business, seven different records</h3>
+  <table class="rec">
+    <tr><td>S1</td><td>Cabrera Secure Sciences</td><td>165 Barren River Drive, Unit UNIT 2, Erlanger, KY</td></tr>
+    <tr><td>S2</td><td>Cabrera 5ecure Sciences LP</td><td>165 BARREN RIVER DR, ERLANGER KY, KY</td></tr>
+    <tr><td>S2</td><td>CABRERA SECURE SCIENCES</td><td>ERLANGER, KY, 165 BARREN RIVER DRIVE</td></tr>
+    <tr><td>S3</td><td>Jaxaria Formerly Cabrera Secure Sciences</td><td>165 Barren River Drive, Unit UNIT 2, Erlanger, KY</td></tr>
+    <tr><td>S3</td><td>Cabrera&nbsp;&nbsp;Secure Sciences</td><td>165 Barren River Drive, # UNIT 2, Erlanger Ky, Kentucky</td></tr>
+  </table>
+</section>
+
+<!-- PREPROCESSING -->
+<section id="prep">
+  <h2><span class="n">3</span>Preprocessing: cleaning 23.4M records</h2>
+  <p class="lead">Each record is turned into comparable fields: core name, legal form, street text, house numbers, state, postcode and phonetic keys.
+  Rules were checked with automatic tests and by measuring true pairs against random pairs.</p>
+  <div class="flow">
+    <div class="box"><b>Text</b>NFKC, transliterate Indic scripts to Latin, strip accents, lowercase, NULL → empty</div><div class="arrow">→</div>
+    <div class="box"><b>Names</b>junk prefixes, websites, digit typos (C0mpany), legal forms, aliases (dba/formerly), honorifics</div><div class="arrow">→</div>
+    <div class="box"><b>Addresses</b>state first, then abbreviations per country; postcode, house numbers, renamed cities</div><div class="arrow">→</div>
+    <div class="box"><b>Cache</b>parquet, 7 GB, reloads in ~2 min</div>
+  </div>
+  <h3>Bugs found and fixed (your Colab code + my first version)</h3>
+  <table>
+    <tr><th>Bug</th><th>Example</th><th>Now</th></tr>
+    <tr><td>Abbreviations expanded before states were read</td><td><code>Miami, FL</code> → "floor"</td><td class="ok">state = fl</td></tr>
+    <tr><td>Any short word taken as a state</td><td><code>rue de la paix</code> → state "la"</td><td class="ok">no state for France</td></tr>
+    <tr><td>City names read as states</td><td><code>Washington, DC</code> → wa; <code>Kansas City, MO</code> → ks</td><td class="ok">dc / mo</td></tr>
+    <tr><td>Saint vs St inconsistent</td><td>"Hackberry Saint" ≠ "Hackberry St"</td><td class="ok">both "street"</td></tr>
+    <tr><td>Native-script states unknown</td><td><code>महाराष्ट्र</code></td><td class="ok">16 spellings learned from labels</td></tr>
+    <tr><td>Any 5+ digit number treated as a zip</td><td>house number 17560</td><td class="ok">postcode rules per country</td></tr>
+    <tr><td>French <code>N°</code>, <code>+</code> vs <code>&amp;</code></td><td>"ndeg 12", "plus"</td><td class="ok">"no 12", "and"</td></tr>
+    <tr><td>Single-core, lists in columns</td><td>about 1 hour, too much memory</td><td class="ok">5 min on 22 cores</td></tr>
+  </table>
+  <h3>Did the cleaning work? (true pairs vs random same-country pairs)</h3>
+  <div class="legend"><span><i style="background:var(--series-1)"></i>True match</span><span><i style="background:var(--series-2)"></i>Random pair</span></div>
+  <div id="prepChart"></div>
+  <p class="note">The remaining 0.7% state disagreements are almost all Telangana vs Andhra Pradesh, which is real vendor noise from the 2014 state split.</p>
+</section>
+
+<!-- BLOCKING -->
+<section id="blocking">
+  <h2><span class="n">4</span>Blocking: building a shortlist of 40 candidates per business</h2>
+  <p class="lead">Comparing 1.7M × 10M records directly is impossible, so each Source 1 record first gets a cheap shortlist.</p>
+  <div class="grid2">
+    <div class="card"><h4>How it works</h4><ul>
+      <li>Compare only inside <b>country + state</b> (no-state records compared against the whole country; Telangana + Andhra merged)</li>
+      <li>4 TF-IDF views: name 3–4-grams, street 3–4-grams, phonetic 3–4-grams, words 1–2</li>
+      <li>2 exact keys: house number + street word; rarest name word</li>
+      <li>Rank by <b>reciprocal-rank fusion</b>, keep the top 40</li>
+    </ul></div>
+    <div class="card"><h4>Measured (20k train S1 vs all 10.3M S2/S3)</h4><ul>
+      <li>All views together find <b>98.3%</b> of true matches</li>
+      <li>Top 40 keep <b>97.7%</b> (US 99.6%, India 96.5%)</li>
+      <li>A 3–5-gram view was <b>dropped</b>: 58% of the time for 0.03% extra matches</li>
+      <li>Speed: 12–50 h estimate → about 11 min for train</li>
+    </ul></div>
+  </div>
+  <h3>Recall vs number of candidates kept</h3>
+  <div class="legend"><span><i style="background:var(--series-1)"></i>Rank fusion (used)</span><span><i style="background:var(--series-2)"></i>Sum of scores (old)</span></div>
+  <svg id="capChart" viewBox="0 0 640 230" width="100%" style="max-width:720px"></svg>
+  <details><summary>Table</summary>
+  <table><tr><th>Candidates</th><th class="num">10</th><th class="num">20</th><th class="num">30</th><th class="num">40</th><th class="num">50</th><th class="num">60</th></tr>
+  <tr><td>Rank fusion</td><td class="num">94.81%</td><td class="num">96.67%</td><td class="num">97.34%</td><td class="num">97.68%</td><td class="num">97.86%</td><td class="num">98.01%</td></tr>
+  <tr><td>Sum of scores</td><td class="num">94.32%</td><td class="num">96.17%</td><td class="num">96.82%</td><td class="num">97.13%</td><td class="num">97.32%</td><td class="num">97.49%</td></tr></table></details>
+</section>
+
+<!-- MODEL -->
+<section id="model">
+  <h2><span class="n">5</span>Features and model</h2>
+  <div class="grid2">
+    <div class="card"><h4>82 features per candidate pair</h4><ul>
+      <li><b>Name:</b> ratio, token-set, partial, Jaro-Winkler, Levenshtein, phonetic, rare-word weights, legal-form agreement</li>
+      <li><b>Address:</b> street similarity, house-number overlap, state and postcode agreement, empty-field flags</li>
+      <li><b>Blocking:</b> score in each view, fused rank</li>
+      <li><b>Competition:</b> how this candidate ranks among the business's candidates, and whether another business claims the same record</li>
+    </ul></div>
+    <div class="card"><h4>Two-stage XGBoost on the GPU</h4><ul>
+      <li>Stage 1: 82 features, 5 folds grouped by business, about 1,000 trees each (~7 min per fold on the RTX A2000)</li>
+      <li>Stage 2: adds 13 features built from stage-1 scores (support from sibling candidates, reverse competition)</li>
+      <li>Stage-1 AUC 0.9995; stage-2 AUC 0.9996</li>
+      <li>Most useful: combined similarity, fused rank, house-number difference, reverse competition</li>
+    </ul></div>
+  </div>
+  <p class="note">Training ran on a <b>random sample of 200k</b> training businesses against all 10.3M S2/S3 records. Section 8 explains why this sampling is probably the main weakness.</p>
+</section>
+
+<!-- DECISION -->
+<section id="decision">
+  <h2><span class="n">6</span>Decision layer: turning probabilities into the final list</h2>
+  <p class="lead">Four rules were compared on validation with the exact metric. The winner:</p>
+  <div class="flow">
+    <div class="box"><b>Calibrate</b>isotonic regression on validation probabilities</div><div class="arrow">→</div>
+    <div class="box"><b>One-to-one</b>each S2/S3 record kept only for the business that scores it highest</div><div class="arrow">→</div>
+    <div class="box"><b>Expected F0.5</b>per business, choose how many top candidates to keep (0 allowed) to maximise expected F0.5</div>
+  </div>
+  <table>
+    <tr><th>Rule</th><th class="num">Validation F0.5</th></tr>
+    <tr><td>Fixed thresholds (gate 0.7, include 0.7)</td><td class="num">0.96406</td></tr>
+    <tr><td>Expected F0.5</td><td class="num">0.96482</td></tr>
+    <tr><td><b>Expected F0.5 + one-to-one (chosen)</b></td><td class="num"><b>0.96488</b></td></tr>
+  </table>
+</section>
+
+<!-- RESULTS -->
+<section id="results">
+  <h2><span class="n">7</span>Results</h2>
+  <div class="grid2">
+    <div>
+      <h3 style="margin-top:0">Validation (training data with known answers)</h3>
+      <div class="hbars" id="valBars"></div>
+    </div>
+    <div>
+      <h3 style="margin-top:0">Test output (what was submitted)</h3>
+      <table>
+        <tr><th>Country</th><th class="num">Entities</th><th class="num">Pairs</th><th class="num">≥1 match</th><th class="num">Mean</th></tr>
+        <tr><td>France</td><td class="num">259,452</td><td class="num">10.4M</td><td class="num">94.2%</td><td class="num">3.13</td></tr>
+        <tr><td>India</td><td class="num">809,986</td><td class="num">32.4M</td><td class="num">93.5%</td><td class="num">3.12</td></tr>
+        <tr><td>US</td><td class="num">663,106</td><td class="num">26.5M</td><td class="num">94.1%</td><td class="num">3.26</td></tr>
+        <tr><td><b>Total</b></td><td class="num"><b>1,732,544</b></td><td class="num"><b>69.3M</b></td><td class="num"><b>93.8%</b></td><td class="num"><b>3.17</b></td></tr>
+      </table>
+      <p class="note">Training truth: 94.4% have a match, 3.46 on average. Our mean is lower, consistent with the missed matches in section 8.
+      Official validator: <span class="ok">PASS</span>.</p>
+    </div>
+  </div>
+</section>
+
+<!-- WHY -->
+<section id="why">
+  <h2><span class="n">8</span>Why the score is 0.965 and not 0.99</h2>
+  <p class="lead">We lose 0.035. Measured on validation, it splits like this:</p>
+  <div class="hbars" id="lossBars"></div>
+  <p class="note">With a perfect model on the <b>same shortlist</b> the score would be 0.991, so the shortlist is fine; <b>the model is too cautious</b>.</p>
+
+  <h3>The model's probability for the 36,820 true matches it rejected</h3>
+  <div class="vbars" id="probHist"></div><div class="vx" id="probX"></div>
+  <p class="note">43% of rejected true matches had probability 0.5–0.9. The wrong matches we kept have a median probability of 0.84, so the two groups overlap and the decision rule has to set a high bar.</p>
+
+  <h3>Typical rejected true matches: a matching name, no address</h3>
+  <table class="rec">
+    <tr><th>Source 1</th><th>Source 2/3 (true match)</th><th class="num">p</th></tr>
+    <tr><td>Liberty Fund | 5110 Washington Blvd, Chicago, IL</td><td>The Liberty Fund | <i>(empty)</i></td><td class="num">0.02</td></tr>
+    <tr><td>Big Grill | 17176 Coronado Ave, Fontana, CA</td><td>Big Grill Enterprises | <i>(empty)</i></td><td class="num">0.01</td></tr>
+    <tr><td>Raven PC | 8123 15th Ave, Hyattsville, MD</td><td>Raven PC Center | <i>(empty)</i></td><td class="num">0.04</td></tr>
+    <tr><td>Brain &amp; Co | B19, Tv Industrial Estate …</td><td>Miralyrafaye Labs | B19, Tv Industrial Estate …</td><td class="num">0.04</td></tr>
+  </table>
+
+  <h3>Probable root cause (hypothesis, not yet proven)</h3>
+  <div class="card">
+    Training used a <b>random 200k</b> of 2.2M businesses, but candidates came from <b>all</b> 10.3M records.
+    Many strong-looking candidates belong to a business that is <b>not in the sample</b>, so in training they appear as
+    "looks like a match, labelled no-match" with nobody competing for them. The model learns to be cautious.
+    At test time every business is present and competes for its own records, so that caution is unnecessary.
+    <br><br><b>Fix:</b> train on <b>all</b> businesses of complete states, and add <b>name-uniqueness</b> features
+    (is "Big Grill" the only one in the country?).
+  </div>
+</section>
+
+<!-- ERRORS -->
+<section id="errors">
+  <h2><span class="n">9</span>Errors and bottlenecks (honest list)</h2>
+  <div class="grid2">
+    <div class="card"><h4>Errors</h4><ul>
+      <li><span class="no">Design:</span> random-sample training → over-cautious model</li>
+      <li><span class="no">Design:</span> no name-uniqueness features</li>
+      <li><span class="no">Design:</span> France not partitioned</li>
+      <li><span class="no">Process:</span> models kept only in memory → lost when the kernel locked</li>
+      <li><span class="no">Process:</span> an inefficient text-ID comparison locked the kernel (would have taken days)</li>
+      <li><span class="wa">Process:</span> 35 min of CPU training wasted before the GPU switch</li>
+      <li><span class="wa">Communication:</span> I went back and forth on whether the DEV score was inflated; the measurement settled it</li>
+    </ul></div>
+    <div class="card"><h4>Bottlenecks (the 6-hour run)</h4>
+      <div class="hbars" id="timeBars" style="grid-template-columns:150px 1fr 60px"></div>
+      <p class="note">About 2 h of the test inference ran on <b>one CPU core</b> (Python loops) and France took 60 min unpartitioned.</p>
+    </div>
+  </div>
+</section>
+
+<!-- SAVED -->
+<section id="saved">
+  <h2><span class="n">10</span>What is saved, and where</h2>
+  <table>
+    <tr><th>What</th><th>Where</th><th>In git?</th></tr>
+    <tr><td>Submission file (validator PASS)</td><td><code>output/matching_results.tsv</code> (+ copy in the run folder)</td><td class="muted">no (93 MB)</td></tr>
+    <tr><td>Candidate pairs</td><td><code>output/candidate_pairs.tsv</code></td><td class="muted">no (915 MB)</td></tr>
+    <tr><td>Final package</td><td><code>team_submission.zip</code> (424 MB)</td><td class="muted">no</td></tr>
+    <tr><td>Cleaned data, all 23.4M rows</td><td><code>cache/*.parquet</code> (7 GB)</td><td class="muted">no</td></tr>
+    <tr><td>Run record: settings, scores, issues, checksums</td><td><code>runs/run01_first_submission/metrics.json</code></td><td class="ok">yes</td></tr>
+    <tr><td>Notebook with outputs, logs</td><td><code>er_pipeline.ipynb</code>, <code>runs/run01_first_submission/</code></td><td class="ok">yes</td></tr>
+    <tr><td>Package code and documentation</td><td><code>submission/code/…</code>, <code>submission/Documentation_template.md</code></td><td class="ok">yes</td></tr>
+    <tr><td>Trained models</td><td>—</td><td class="no">lost (retrain ~1 h 15 min)</td></tr>
+  </table>
+  <p class="note">Local git repository in <code>ml_challenghe/</code>, commit <code>1c7b154</code>. Data is excluded on purpose (size, and competition data must not be published).</p>
+</section>
+
+<!-- NEXT -->
+<section id="next">
+  <h2><span class="n">11</span>What comes next (run 2)</h2>
+  <div class="grid2">
+    <div class="card"><h4>Make runs safe and fast</h4><ul>
+      <li>Save every stage to <code>runs/runXX/</code> as soon as it finishes</li>
+      <li>Spread the three single-core loops over 22 cores (~15× faster)</li>
+      <li>Split France by region</li>
+      <li>Target: about 2 hours per full run instead of 6</li>
+    </ul></div>
+    <div class="card"><h4>Raise the score</h4><ul>
+      <li>Train on <b>complete states</b> instead of a random sample</li>
+      <li>Add <b>name-uniqueness</b> features for address-less records</li>
+      <li>Test on a small region first (~15 min per experiment); full run only if validation clearly beats 0.965</li>
+      <li>Later: GPU embeddings for Indian-script names (up to +0.009)</li>
+    </ul></div>
+  </div>
+</section>
+
+</div><div id="tip"></div></div>
+
+<script>
+const tip = document.getElementById("tip");
+function bindTip(el, text){
+  el.addEventListener("mousemove", e => { tip.textContent = text; tip.style.opacity = 1;
+    tip.style.left = (e.clientX + 12) + "px"; tip.style.top = (e.clientY + 12) + "px"; });
+  el.addEventListener("mouseleave", () => tip.style.opacity = 0);
+}
+function hbars(id, rows, max, fmt, color){
+  const el = document.getElementById(id);
+  rows.forEach(([k, v, t]) => {
+    const lab = document.createElement("div"); lab.className = "lab"; lab.textContent = k;
+    const tr = document.createElement("div"); tr.className = "track";
+    const b = document.createElement("div"); b.className = "bar"; b.style.width = (v / max * 100) + "%";
+    if (color) b.style.background = color;
+    tr.appendChild(b);
+    const val = document.createElement("div"); val.className = "val"; val.textContent = fmt(v);
+    bindTip(tr, t || `${k}: ${fmt(v)}`);
+    el.append(lab, tr, val);
+  });
+}
+// preprocessing paired bars
+(() => {
+  const el = document.getElementById("prepChart");
+  const d = [["Name similarity", 92.0, 30.8, ""], ["Address similarity", 93.3, 34.8, ""],
+             ["House numbers overlap (%)", 94.6, 3.4, "%"], ["States agree (%)", 99.3, 6.7, "%"]];
+  el.style.display = "grid"; el.style.gridTemplateColumns = "200px 1fr 60px"; el.style.gap = "4px 10px";
+  el.style.fontSize = "13px"; el.style.alignItems = "center";
+  d.forEach(([k, a, b, u]) => {
+    const lab = document.createElement("div"); lab.textContent = k; lab.style.color = "var(--text-secondary)";
+    lab.style.textAlign = "right"; lab.style.gridRow = "span 2";
+    el.appendChild(lab);
+    [[a, "var(--series-1)", "true matches"], [b, "var(--series-2)", "random pairs"]].forEach(([v, c, who], i) => {
+      const tr = document.createElement("div"); tr.style.position = "relative"; tr.style.height = "14px";
+      const bar = document.createElement("div"); bar.style.cssText = `position:absolute;left:0;top:0;bottom:0;width:${v}%;background:${c};border-radius:0 4px 4px 0`;
+      tr.appendChild(bar); bindTip(tr, `${k}, ${who}: ${v}${u}`);
+      const val = document.createElement("div"); val.textContent = v + u; val.style.fontVariantNumeric = "tabular-nums";
+      el.append(tr, val);
+    });
+    el.appendChild(Object.assign(document.createElement("div"), {style: "grid-column:1/-1;height:6px"}));
+  });
+})();
+// recall vs cap line chart (SVG)
+(() => {
+  const svg = document.getElementById("capChart"), W = 640, H = 230, m = {l: 50, r: 20, t: 12, b: 34};
+  const caps = [10, 20, 30, 40, 50, 60];
+  const rrf = [94.81, 96.67, 97.34, 97.68, 97.86, 98.01], sum = [94.32, 96.17, 96.82, 97.13, 97.32, 97.49];
+  const x = c => m.l + (c - 10) / 50 * (W - m.l - m.r), y = v => m.t + (98.5 - v) / 4.5 * (H - m.t - m.b);
+  let s = "";
+  [94, 95, 96, 97, 98].forEach(v => s += `<line x1="${m.l}" x2="${W - m.r}" y1="${y(v)}" y2="${y(v)}" stroke="var(--grid)"/><text x="${m.l - 8}" y="${y(v) + 4}" text-anchor="end">${v}%</text>`);
+  caps.forEach(c => s += `<text x="${x(c)}" y="${H - 12}" text-anchor="middle">${c}</text>`);
+  s += `<text x="${(W + m.l) / 2}" y="${H}" text-anchor="middle">candidates kept per business</text>`;
+  s += `<line x1="${x(40)}" x2="${x(40)}" y1="${m.t}" y2="${H - m.b}" stroke="var(--text-muted)" stroke-dasharray="3 3"/><text x="${x(40) + 4}" y="${m.t + 10}">chosen: 40</text>`;
+  [[sum, "var(--series-2)"], [rrf, "var(--series-1)"]].forEach(([d, c]) => {
+    s += `<polyline fill="none" stroke="${c}" stroke-width="2" points="${d.map((v, i) => x(caps[i]) + "," + y(v)).join(" ")}"/>`;
+    d.forEach((v, i) => s += `<circle class="pt" cx="${x(caps[i])}" cy="${y(v)}" r="4.5" fill="${c}" stroke="var(--surface-1)" stroke-width="2" data-t="${c.includes('1') ? 'rank fusion' : 'sum of scores'}, top ${caps[i]}: ${v}%"/>`);
+  });
+  s += `<text x="${x(60) + 2}" y="${y(98.01) - 8}" text-anchor="end">rank fusion</text><text x="${x(60) + 2}" y="${y(97.49) + 16}" text-anchor="end">sum of scores</text>`;
+  svg.innerHTML = s;
+  svg.querySelectorAll(".pt").forEach(p => bindTip(p, p.dataset.t));
+})();
+// validation bars
+hbars("valBars", [["Overall", 0.9649], ["US", 0.9718], ["India", 0.9544], ["Non-singletons", 0.9661], ["Singletons", 0.9436],
+                  ["Perfect model, same shortlist", 0.9912]], 1, v => v.toFixed(4));
+// loss bars
+hbars("lossBars", [["Model / decision too cautious", 0.0264, "36,820 true matches on the shortlist were not selected: 0.0264"],
+                   ["Blocking: not on the shortlist", 0.0088, "16,463 true matches never reached the top 40: 0.0088"]],
+      0.03, v => v.toFixed(4), "var(--series-2)");
+// probability histogram
+(() => {
+  const el = document.getElementById("probHist"), x = document.getElementById("probX");
+  const d = [["<0.01", 1415], ["0.01–0.05", 4412], ["0.05–0.1", 2206], ["0.1–0.2", 3439], ["0.2–0.3", 2948],
+             ["0.3–0.5", 6423], ["0.5–0.7", 11182], ["0.7–0.9", 4795], ["≥0.9", 0]];
+  const tot = d.reduce((a, [, v]) => a + v, 0), max = 32;
+  [10, 20, 30].forEach(g => { const l = document.createElement("div"); l.className = "gline"; l.style.bottom = (g / max * 100) + "%"; el.appendChild(l); });
+  d.forEach(([k, v]) => {
+    const p = v / tot * 100;
+    const c = document.createElement("div"); c.className = "col";
+    const t = document.createElement("div"); t.className = "top"; t.textContent = p >= 1 ? p.toFixed(0) + "%" : (v === 0 ? "0" : "");
+    const b = document.createElement("div"); b.className = "bar"; b.style.height = (p / max * 100) + "%";
+    c.append(t, b); bindTip(c, `p ${k}: ${v.toLocaleString()} missed true matches (${p.toFixed(1)}%)`); el.appendChild(c);
+    const s = document.createElement("span"); s.textContent = k; x.appendChild(s);
+  });
+})();
+// time bars
+hbars("timeBars", [["Test inference", 234, "Per-country test inference: 3.9 h (France 60, India 83, US 75 min)"],
+                   ["GPU training", 47, "Stage 1 + 2 XGBoost, 5 folds each: 47 min"],
+                   ["TF-IDF fits", 20, "Vocabulary fitting, train + test: ~20 min"],
+                   ["Blocking (train)", 11], ["Features (train)", 7], ["Cleaning (cached)", 7]],
+      240, v => v + " min", "var(--series-1)");
+document.getElementById("themebtn").onclick = () => {
+  const r = document.documentElement, dark = r.dataset.theme === "dark" ||
+    (!r.dataset.theme && matchMedia("(prefers-color-scheme: dark)").matches);
+  r.dataset.theme = dark ? "light" : "dark";
+};
+</script>
+</body>
+</html>
