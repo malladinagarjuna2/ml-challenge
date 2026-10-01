@@ -1,0 +1,73 @@
+
+===== cell 0 =====
+[19:03:09 +     0s] run02 start | DEV = False | run dir C:/Users/malla/ml_challenghe/runs/run02_full
+----- cell 0 ok in 3s
+
+===== cell 1 =====
+[19:03:32 +    23s] loaded v2 cache {'train_s1': 2206821, 'train_s2': 5034616, 'train_s3': 5285603, 'test_s1': 1732544, 'test_s2': 4887273, 'test_s3': 5082316}
+----- cell 1 ok in 23s
+
+===== cell 2 =====
+[19:03:40 +    31s] Indic-script S2/S3 names in train: 752,869 | true pairs among them: 551,240 | share with a common name word BEFORE: 0.994
+[19:03:40 +    31s] transliteration table: 503 word mappings, e.g. {'intrneshnl': 'intl', 'tek': 'tech', 'phuds': 'fods', 'enrji': 'energy', 'sistms': 'systems', 'knsltensi': 'consultancy', 'globl': 'global', 'treding': 'trading'}
+[19:04:06 +    57s] share of Indic true pairs with a common name word AFTER: 0.994
+30
+----- cell 2 ok in 34s
+
+===== cell 3 =====
+----- cell 3 ok in 0s
+
+===== cell 4 =====
+[19:05:39 +   150s] generated-name model: 209,315 generated words, e.g. ['earnosethroat', 'earnose', 'revitup', 'fotankle', 'womenshealth', 'primarycare', 'urgentcare', 'mainstret']
+[19:05:39 +   150s]    scores: {'zephzeph': 2.38, 'brixumbra': 1.37, 'miralyrafaye': 1.5, 'barbershop': -0.1, 'finance': 0.01, 'logistics': 0.22, 'ecole': 0.05}
+[19:08:41 +   332s] train: whole-data row statistics added (182s)
+[19:09:42 +   393s] test: whole-data row statistics added (61s)
+[19:09:42 +   393s] {'train': 'L=2,206,821 R=10,320,219', 'test': 'L=1,732,544 R=9,969,589'}
+----- cell 4 ok in 335s
+
+===== cell 5 =====
+[19:09:42 +   393s] blocking functions defined
+----- cell 5 ok in 0s
+
+===== cell 6 =====
+[19:09:42 +   393s] feature functions defined
+----- cell 6 ok in 0s
+
+===== cell 7 =====
+[19:09:55 +   406s] train: 23 chunks, 0 to do
+[19:10:07 +   418s] test: 18 chunks, 0 to do
+[19:10:20 +   431s] train blocking recall (top 40): 0.9841  (7,516,749/7,638,365)
+----- cell 7 ok in 38s
+
+===== cell 8 =====
+[19:10:20 +   431s] stage B done
+----- cell 8 ok in 0s
+
+===== cell 9 =====
+[19:11:03 +   474s] stage-1 training rows: 38,722,210 (pos 7,516,749) x 92 features
+[19:30:47 +  1657s]    fold 0: best_it=2264 (1183s)
+[19:48:02 +  2693s]    fold 1: best_it=1948 (1036s)
+[20:08:11 +  3902s]    fold 2: best_it=2327 (1209s)
+[20:25:07 +  4918s] stage-1 OOF AUC=0.99979 AP=0.99805
+----- cell 9 ok in 4487s
+
+===== cell 10 =====
+[20:29:50 +  5201s]    train stage-2 features [india] (91s)
+[20:31:59 +  5330s]    train stage-2 features [us] (128s)
+[20:35:16 +  5526s]    test stage-2 features [france] (23s)
+[20:36:39 +  5609s]    test stage-2 features [india] (82s)
+[20:37:40 +  5671s]    test stage-2 features [us] (61s)
+[21:12:57 +  7788s]    fold 0: best_it=299 (2076s)
+[21:18:29 +  8120s]    fold 1: best_it=350 (332s)
+[21:26:14 +  8585s]    fold 2: best_it=258 (465s)
+[22:04:17 + 10868s] stage-2 OOF AUC=0.99982 AP=0.99835
+----- cell 10 ok in 5950s
+
+===== cell 11 =====
+[22:05:47 + 10958s] thresh   one2one=False: 0.98038 @ (0.7, 0.7)
+[22:06:49 + 11020s] expected one2one=False: 0.98067
+[22:08:28 + 11118s] thresh   one2one=True: 0.98040 @ (0.7, 0.7)
+[22:09:22 + 11172s] expected one2one=True: 0.98069
+[22:09:22 + 11172s] BEST decision rule: ('expected', True, None, np.float64(0.9806930428957493))
+[22:10:42 + 11253s] VALIDATION (OOF, all train S1): {'f05': 0.9807, 'precision': 0.9958, 'recall': 0.9542, 'oracle_same_shortlist': 0.9947, 'blocking_recall': 0.9841, 'singletons': 0.9767, 'non_singletons': 0.9809, 'f05_india': 0.9769, 'f05_us': 0.9832}
+----- cell 11 ok in 385s

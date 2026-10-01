@@ -1,0 +1,116 @@
+
+=== DBA / alias name
+  S1: All Research Products Inc | 5405 Charrin Drive, Houston, TX
+  R : Jaxzeta | 5405 Charrin Drive, Hoston CITY, Texas   (addr sim 98)
+  S1: Nova Navigation PC | 656 Iron Road, Phillipsburg, KS
+  R : Nylaorbicalo | Iron Rd, Phillipsburg, Kansas   (addr sim 100)
+  S1: Walters's Delta Consulting Care | 339 Olentangy Street, Columbus, OH
+  R : #walterssdelta | Columbus, Ohio, 339 Olentangy Saint   (addr sim 100)
+  S1: Varenyam & Co | 303, Gods Gift, New Ravi Raj Complex, Jesal Park, Bhyandar (East), Thane, Maharashtra
+  R : Vaonyim & Co | 303., Bhyandar (East), Thane, MH   (addr sim 100)
+  S1: AGG Electricals Private Limited | 34/A, 1St Floor, Raghava Ratna Towers, Chirag Ali-Lane, Nampally, Hyderabd, Hyderabad, Telangana
+  R : Nexpyravantage | Plot 53 34/A, 1St Floor, Raghava Ratna Towers, Chirag Ali-lane, Nampally, Hyderabd, Hyderabad, TG   (addr sim 100)
+  S1: Jillayne Fluker, DMD | 6913 Schubert, Colleyville, TX
+  R : Onyxiri | 6913 Schubert, Colelyville, Texas   (addr sim 96)
+
+=== Indic script (after translit)
+  S1: Sree Constructions Private Limited | C/O Sindhu R S, Tc 8/2439/1, (Spxiii/16-5) Navaneetham, Ajith Nagar, Kariam, Thiruvananthapuram, Thiruvananthapuram, Trivandrum, Kerala
+  R : ശ്രീ കൺസ്ട്രക്ഷൻസ് പ്രൈവറ്റ് ലിമിറ്റഡ് | C/o Sindhu R S, Tc 8/2439/1, (Spxiii/16-5) Navaneetham, Ajith Nagar, Kariam, Thiruvananthapuram, Trivandrum, KL   (addr sim 100)
+  S1: Lakshmi Enterprises Private Limited | Warangal Urban, Hanamkonda, No. F 15, Telangana, Sikhwada Thirumala Mall
+  R : లక్ష్మీ ఎంటర్‌ప్రైజెస్ ప్రైవేట్ లిమిటెడ్ | NO. F 15, SIKHWADA THIRUMALA MALL, HANAMKONDA, WARANGAL URBAN, తెలంగాణ   (addr sim 100)
+  S1: Sree Services Private Limited | Plot No-9, Chandaka Industrial Estate, Infront Of Sai International School, Infocity Road, Patia, Bhubaneswar, Khordha, Orissa
+  R : ଶ୍ରୀ ସର୍ଭିସେସ୍ ପ୍ରାଇଭେଟ୍ ଲିମିଟେଡ୍ | BLOCK B-741 PLOT NO-9, Odisha, KHORDHA, DIST KHURDA   (addr sim 58)
+  S1: Shree Technologies Limited | No.5 Vembuliamman Koil 1 Cross Street, Chennai, Tamil Nadu
+  R : ஸ்ரீ டெக்னாலஜீஸ் லிமிடெட் | No.5 Vembuliamman Koil 1 Cross Street, Chennai, TN   (addr sim 100)
+  S1: All Construction Limited | 16/553 G, H Prayag Complex, Kuthuparamba Road 4/1 Kadirur Po, Thalassery Kannur, Thalassery, Kannur, Kerala
+  R : ഓൾ കൺസ്ട്രക്ഷൻ ലിമിറ്റഡ് | NO 16/553 G, KANNUR, THALASSERY, Kerala   (addr sim 100)
+  S1: Anand Enterprises | 74/80, Babu Genu Road, 3Rd Floor, Souri Bldg., Kalbadevi, Mumbai, Maharashtra
+  R : आनंद एंटरप्राइजेज | 74/80, Mumbai, Kalbadevi, MH   (addr sim 100)
+
+=== R name empty
+  S1: Natala Allen Natural PC | 1305 3610, Spanish Fork, UT
+  R : NAN | 1305 3610, SPANISH FORK, UT   (addr sim 100)
+
+=== acronym / initials
+  S1: Tdi Nursing Home Associates | 2-2-55B, Periyathambi K V, Kunjandiyur, Mettur., Mettur, Salem, Tamil Nadu
+  R : TNHA | 2-2-55B, Periyathambi K V, Kunjandiyur, Mettur., Mettur, Salem, Tamil Nadu   (addr sim 100)
+  S1: Young Medical Center | 12 Polly Road, Holland, MA
+  R : YMC | 12 POLLY ROAD, HOLLAND, MA   (addr sim 100)
+  S1: Universal College | 199, Delhi, New Delhi, Guru Hari Kishan Paschim Vihar
+  R : UC | 199, Guru Hari Kishan Paschim Vihar, New Delhi, Delhi   (addr sim 100)
+  S1: Koyal Computing Private Limited | G-24, Vardhman A.C. Market Vigyan Vihar, Delhi, East Delhi, Delhi
+  R : KC | Delhi, Vardhman A.C. Market Vigyan Vihar, Delhi, G-24, East Delhi   (addr sim 100)
+  S1: Jp & Brothers Center | 173, Block-A, Lake-Town, Kolkata, Howrah, West Bengal
+  R : JBC | 173, Block-A, Lake-Town, Kolkata, Howrah, West Bengal   (addr sim 100)
+  S1: Shree Commodity Co | B/1304, Lake Pleasant, B Wing, Phase Ii, Lake Homes Near Powai Vihar, Off Adishankaracharya, Rd, Powai, Mumbai, Mumbai City, Maharashtra
+  R : SC | B/1304, Lake Pleasant, B Wing, Phase Ii, Lake Homes Near Powai Vihar, Off Adishankaracharya, Rd, Powai, Mumbai, Mumbai City, Maharashtra   (addr sim 100)
+
+=== spacing / glued words
+  S1: Hartle Innovative Hawk Inc | 1544 Galbraith Road, Unit 409, Cincinnati, OH
+  R : hartleinnovativehawkcom | 1544 GALBRAITH RD, CINCINNATI, OH   (addr sim 100)
+  S1: Perry's Fitness | WV, 328 Rosemont Avenue, Martinsburg
+  R : @perrysfitness | 328B ROSEMONT AVE, MARTINSBURG, WV   (addr sim 98)
+  S1: XSA Haven Private Limited | Flat No. 7A, Pocket A-2, Mayur Vihar Phase-Iii, New Delhi, East Delhi, Delhi
+  R : #xsahaven | FLAT NO. 7A, POCKET A-2, MAYUR VIHAR PHASE-III, NEW DELHI, Delhi   (addr sim 100)
+  S1: Hirsh Boston LLC | 1646 Lemon, Mesa, AZ
+  R : @hirshboston | 1646 Lemon, MESA, Arizona   (addr sim 100)
+  S1: Pediatric Dentistry Group | 3421 86th Street, Town Of Grant, WI
+  R : pediatricdentistrygroupcom | WI, TOWN OF GRANT, 3421 86ND STREET   (addr sim 100)
+  S1: Harris Liberty Worldwide | 580 Long Hollow Road, Buena Vista City, VA
+  R : HarrislibertyworldwideCom | ##580 Long Hollow Rd, Buena Vista City, Virginia   (addr sim 100)
+
+=== typos in every word
+  S1: Poonam Solutions Private Limited | Mumbai, 366 A To Z Industrial Estatefergusson Rd Lower Parel, Maharashtra, Mumbai
+  R : #poonamsolutions | H.no 366 A To Z Industrial Estatefergusson Rd Lower Parel, Mumbai, NULL, महाराष्ट्र   (addr sim 100)
+  S1: Falcon PC | 1316 Garner Street, PA, State College
+  R : Fhrtalcon PC | GARNER STREET, STATE COLLEGE, PA   (addr sim 100)
+  S1: Aurora, Inc | 5222 Hatwai Road, Lewiston, ID
+  R : AourA Inc | 5222 Hatwai Road, Lewiston, Idaho   (addr sim 100)
+  S1: Route 73 Ice Cream | 10784 Berrywood Court, Sandy City, UT
+  R : route73icecom | 0784 Berrywood Ct, Sandy City, Utah   (addr sim 96)
+  S1: Mayfair & Co | 44/002 Mahavir Darshan L T Nagar Road No 3 M G Road Goregaon West, Mumbai, Maharashtra
+  R : MAYFAlR + | 44/002 MAHAVIR DARSHAN L T NAGAR ROAD NO 3 M G ROAD GOREGAON WEST, MUMBAI, Maharashtra   (addr sim 100)
+  S1: Trailblazer Inc | 8648 Onyx Avenue, Fl 1, Scottsdale, AZ
+  R : Traillbbare (Ínc) | AZ, 864 Onyx Ave, SCOTTSDALE   (addr sim 95)
+
+=== website as name
+  S1: Sweet Tavern | 2520 Woodbine Terrace, IL, Peoria
+  R : Sweettavern.Com | Peoria, Illinois, Woodbine Ter   (addr sim 100)
+  S1: Brown Property Solutions | 24555 116th Street, Fl 1, Scottsdale, AZ
+  R : brownpropertysolutions.com | ##24555 116TH STREET, SCOTTSDALE, AZ   (addr sim 100)
+  S1: 143 First Realty LP | 8787 Scottsdale Road, Unit STE 108, Scottsdale, AZ
+  R : fr143.com | 878 Scottsdale Rd, # STE 108, Scottsdale, Arizona   (addr sim 98)
+  S1: Seoni Link Private Limited | Saroj Nagar Colony, Jyarat Naka, Jabalpur Road, Seoni, Madhya Pradesh, Hn 01, Seoni
+  R : linkprivate.com | HN 01, SAROJ NAGAR COLONY, JYARAT NAKA, JABALPUR ROAD, SEONI, Madhya Pradesh   (addr sim 100)
+  S1: Urgent Care Health | 6 Juniper Ridge Road, Danvers, MA
+  R : careurgent.com | ##6 Juniper Ridge Road, Danvers, Massachusetts   (addr sim 100)
+  S1: Harrington, Park and Antoine LLC | 2331 Broadlawn Drive, Houston, TX
+  R : Harringtonparkantoine.Com | 2331 Broadlawn Dr, Houston, Texas   (addr sim 100)
+
+=== name fine, address very different
+  S1: Scope & Sons Private Limited | E-43, Lgf Next To Ctc Plaza, Near Ashram Chowk, Ki, Lokri, New Delhi, South Delhi, Delhi
+  R : Scope & Saosn Private Limited | Hn 139 E-43, Delhi I, DL
+  S1: Sree Business | Plot No 6, C-4 Sector, Town Center Cidco, Aurangabad, Maharashtra
+  R : श्री बिजनेस | NO 6, महाराष्ट्र, CHHATRAPATI SAMBHAJI NAGAR
+  S1: Desire & Co | Shop No. 8 Ground Floor, Smc Shopping Center, Choryasi, Surat, Gujarat
+  R : Desire Co Partners | #8 Ground Floor, Vadodara Region, Surat, GJ
+  S1: Sunsure Academy | No.45B, Engineer'S Avenue 2Nd Main Road, Sunnambu Kolathur, Chennai, Tamil Nadu
+  R : Sunsure Academy Company | 45B, null, Chengalpattu, TN
+  S1: Shakti Consultancy Private Limited | H. No. 106, Pallav Puram, Phase-2 P.S Daurala, Sardhana, Meerut, Uttar Pradesh
+  R : शक्ति कंसल्टेंसी प्राइवेट लिमिटेड | H. NO. B3/106, MEERUT, DULERE CHAUHAN, उत्तर प्रदेश
+  S1: Sunrise Investment Pvt Ltd | No.3/133, Kollampalayam Kattu Valavu, Koranampatty, Salem, Tamil Nadu
+  R : சன்ரைஸ் இன்வெஸ்ட்மெண்ட் பிரைவேட் லிமிடெட் | Door No 3/133, Western Region Coimbatore, Salem, TN
+
+=== same name+state shared by several S1
+  S1: Corner Tavern LLC | 714 Zion Church Road, Mount Olive, NC  (x6)
+  R : Corner Tavern [Llc] | 714 1/2 Zion Church Rd, Mount Olive, North Carolina
+  S1: Modern Construction Private Limited | B-Wing, 703, G Block, Floor No.7, One Bkc, Bandra Kurla Complex, Bandra East, Mumbai, Mumbai City, Maharashtra  (x23)
+  R : modernconstructionprivate.com | MH, B-wing, Mumbai, Mumbai City
+  S1: Royal Systems Limited | At C/O Kewal Bhamare, 118/1A Aavhati, Satana, Nashik, Maharashtra  (x18)
+  R : रॉयल सिस्टम्स लिमिटेड | At C/o Kewal Bhamare, 118/1A Aavhati, Satana, Chaudhane, MH
+  S1: Hari Properties Private Limited | D.No.8-32-1, 1Stlane, V.T.Agraharam, Yjunction, Nearanjaneyaswamytemple, Vizianagaram, Andhra Pradesh  (x3)
+  R : Hari  Properties Private Limited | 8-32-1 , 1STLANE, V.T.AGRAHARAM, YJUNCTION, NEARANJANEYASWAMYTEMPLE, ఆంధ్రప్రదేశ్
+  S1: Indian Food | 230/8985, A Wing, Atmaseva, Bldg, Vikhroli East, Mumbai, Maharashtra  (x20)
+  R : इंडियन Food | Mumbai Ii, MH, 230/8985, Mumbai
+  S1: Ember PLLC | 17228 Cambridge Grove Drive, Huntersville, NC  (x26)
+  R : PLLC Ember | 17228 Cambridge Grove Dr, Huntersville, North Carolina

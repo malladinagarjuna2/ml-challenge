@@ -1,0 +1,101 @@
+
+===== cell 0 =====
+[14:50:00 +     0s] run02 start | DEV = False | run dir C:/Users/malla/ml_challenghe/runs/run02_full
+----- cell 0 ok in 1s
+
+===== cell 1 =====
+[14:50:16 +    16s] loaded v2 cache {'train_s1': 2206821, 'train_s2': 5034616, 'train_s3': 5285603, 'test_s1': 1732544, 'test_s2': 4887273, 'test_s3': 5082316}
+----- cell 1 ok in 16s
+
+===== cell 2 =====
+[14:50:22 +    22s] Indic-script S2/S3 names in train: 752,869 | true pairs among them: 551,240 | share with a common name word BEFORE: 0.994
+[14:50:22 +    22s] transliteration table: 503 word mappings, e.g. {'intrneshnl': 'intl', 'tek': 'tech', 'phuds': 'fods', 'enrji': 'energy', 'sistms': 'systems', 'knsltensi': 'consultancy', 'globl': 'global', 'treding': 'trading'}
+[14:50:41 +    42s] share of Indic true pairs with a common name word AFTER: 0.994
+30
+----- cell 2 ok in 27s
+
+===== cell 3 =====
+----- cell 3 ok in 0s
+
+===== cell 4 =====
+[14:51:33 +    93s] generated-name model: 209,315 generated words, e.g. ['earnosethroat', 'earnose', 'revitup', 'fotankle', 'womenshealth', 'primarycare', 'urgentcare', 'mainstret']
+[14:51:33 +    93s]    scores: {'zephzeph': 2.38, 'brixumbra': 1.37, 'miralyrafaye': 1.5, 'barbershop': -0.1, 'finance': 0.01, 'logistics': 0.22, 'ecole': 0.05}
+[14:52:39 +   159s] train: whole-data row statistics added (67s)
+[14:53:43 +   224s] test: whole-data row statistics added (64s)
+[14:53:43 +   224s] {'train': 'L=2,206,821 R=10,320,219', 'test': 'L=1,732,544 R=9,969,589'}
+----- cell 4 ok in 181s
+
+===== cell 5 =====
+[14:53:43 +   224s] blocking functions defined
+----- cell 5 ok in 0s
+
+===== cell 6 =====
+[14:53:43 +   224s] feature functions defined
+----- cell 6 ok in 0s
+
+===== cell 7 =====
+[14:53:59 +   239s] train: 23 chunks, 23 to do
+[14:55:39 +   339s]    view v_name_c: vocab=169,533 (96s)
+[14:58:23 +   504s]    view v_addr_c: vocab=177,039 (165s)
+[15:00:49 +   649s]    view v_all_w: vocab=3,776,069 (145s)
+[15:04:19 +   859s]    view v_phon_c: vocab=146,113 (210s)
+[15:09:41 +  1181s]    train A_0000 [india] S1=22,889 pairs=915,557 pos=78,135 (51s)
+[15:14:18 +  1458s]    train A_0001 [india] S1=120,000 pairs=4,800,000 pos=400,426 (276s)
+[15:16:39 +  1599s]    train A_0002 [india] S1=94,586 pairs=3,783,433 pos=318,137 (141s)
+[15:19:20 +  1760s]    train A_0003 [india] S1=105,357 pairs=4,214,273 pos=356,370 (160s)
+[15:30:19 +  2419s]    train A_0004 [india] S1=120,000 pairs=4,799,997 pos=401,379 (658s)
+[15:37:37 +  2857s]    train A_0005 [india] S1=108,066 pairs=4,322,624 pos=363,642 (438s)
+[15:41:04 +  3064s]    train A_0006 [india] S1=118,493 pairs=4,739,702 pos=402,128 (206s)
+[15:43:09 +  3189s]    train A_0007 [india] S1=63,294 pairs=2,531,754 pos=213,181 (124s)
+[15:45:30 +  3330s]    train A_0008 [india] S1=73,633 pairs=2,945,305 pos=249,208 (140s)
+[15:47:15 +  3435s]    train A_0009 [india] S1=56,870 pairs=2,274,800 pos=192,907 (105s)
+[15:49:20 +  3560s]    train A_0010 [us] S1=119,896 pairs=4,795,840 pos=412,355 (124s)
+[15:51:01 +  3661s]    train A_0011 [us] S1=102,620 pairs=4,104,800 pos=350,324 (101s)
+[15:54:13 +  3853s]    train A_0012 [us] S1=75,633 pairs=3,025,320 pos=259,827 (192s)
+[15:56:10 +  3970s]    train A_0013 [us] S1=98,882 pairs=3,955,280 pos=339,306 (116s)
+[15:58:16 +  4096s]    train A_0014 [us] S1=109,541 pairs=4,381,640 pos=376,133 (126s)
+[15:59:41 +  4181s]    train A_0015 [us] S1=67,090 pairs=2,683,600 pos=229,822 (84s)
+[16:02:36 +  4356s]    train A_0016 [us] S1=118,720 pairs=4,748,800 pos=407,597 (174s)
+[16:05:25 +  4526s]    train A_0017 [us] S1=102,314 pairs=4,092,560 pos=350,947 (169s)
+[16:07:48 +  4668s]    train A_0018 [us] S1=107,890 pairs=4,315,600 pos=370,715 (142s)
+[16:09:50 +  4791s]    train A_0019 [us] S1=106,768 pairs=4,270,720 pos=366,961 (122s)
+[16:15:12 +  5112s]    train A_0020 [us] S1=120,000 pairs=4,800,000 pos=412,329 (321s)
+[16:20:13 +  5413s]    train A_0021 [us] S1=101,083 pairs=4,043,320 pos=347,053 (300s)
+[16:24:06 +  5646s]    train A_0022 [us] S1=93,196 pairs=3,727,840 pos=317,867 (233s)
+[16:24:41 +  5682s] test: 18 chunks, 18 to do
+[16:27:40 +  5860s]    view v_name_c: vocab=163,210 (153s)
+[16:30:24 +  6024s]    view v_addr_c: vocab=178,333 (164s)
+[16:32:46 +  6166s]    view v_all_w: vocab=3,427,983 (143s)
+[16:36:57 +  6417s]    view v_phon_c: vocab=143,094 (250s)
+[16:46:19 +  6980s]    test A_0000 [france] S1=101,521 pairs=4,060,840 (266s)
+[16:49:09 +  7149s]    test A_0001 [france] S1=85,197 pairs=3,407,880 (169s)
+[16:51:58 +  7318s]    test A_0002 [france] S1=72,734 pairs=2,909,353 (168s)
+[16:53:33 +  7413s]    test A_0003 [india] S1=21,327 pairs=853,080 (94s)
+[17:02:19 +  7939s]    test A_0004 [india] S1=110,634 pairs=4,425,360 (525s)
+[17:07:51 +  8271s]    test A_0005 [india] S1=85,591 pairs=3,423,625 (331s)
+[17:14:12 +  8652s]    test A_0006 [india] S1=97,152 pairs=3,886,078 (380s)
+[17:30:30 +  9630s]    test A_0007 [india] S1=120,000 pairs=4,799,988 (977s)
+[17:40:01 + 10201s]    test A_0008 [india] S1=100,893 pairs=4,035,718 (570s)
+[17:51:06 + 10866s]    test A_0009 [india] S1=96,079 pairs=3,843,158 (663s)
+[17:55:29 + 11129s]    test A_0010 [india] S1=58,443 pairs=2,337,717 (262s)
+[18:04:03 + 11643s]    test A_0011 [india] S1=119,867 pairs=4,794,674 (514s)
+[18:08:03 + 11884s]    test A_0012 [us] S1=112,541 pairs=4,501,637 (239s)
+[18:12:05 + 12125s]    test A_0013 [us] S1=115,492 pairs=4,619,680 (240s)
+[18:16:47 + 12407s]    test A_0014 [us] S1=119,558 pairs=4,782,320 (282s)
+[18:21:40 + 12700s]    test A_0015 [us] S1=119,475 pairs=4,779,000 (292s)
+[18:27:02 + 13023s]    test A_0016 [us] S1=116,715 pairs=4,668,600 (321s)
+[18:30:14 + 13214s]    test A_0017 [us] S1=79,325 pairs=3,173,000 (191s)
+[18:30:51 + 13251s] train blocking recall (top 40): 0.9841  (7,516,749/7,638,365)
+----- cell 7 ok in 13027s
+
+===== cell 8 =====
+[18:35:28 + 13528s]    train stage B [india]: 35,327,445 pairs (278s)
+[18:48:27 + 14308s]    train stage B [us]: 52,945,320 pairs (778s)
+[18:49:20 + 14360s]    test stage B [france]: 10,378,073 pairs (52s)
+[18:53:11 + 14591s]    test stage B [india]: 32,399,398 pairs (231s)
+[18:56:08 + 14768s]    test stage B [us]: 26,524,237 pairs (176s)
+[18:56:08 + 14768s] stage B done
+----- cell 8 ok in 1518s
+
+===== cell 9 =====
+[19:01:54 + 15114s] stage-1 training rows: 38,722,210 (pos 7,516,749) x 92 features

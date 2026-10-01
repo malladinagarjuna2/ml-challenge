@@ -1,0 +1,13 @@
+
+===== cell 12 =====
+[22:13:27 + 11418s] WROTE C:/Users/malla/ml_challenghe/output: S1=1,732,544 non-empty=0.942 mean matches=3.33
+ML Challenge 2026 — submission validator
+  test dir: dataset/test
+  required S1 entities: 1732544
+  matching_results.tsv: 1732544 rows (99684 empty, 1632860 non-empty).
+  candidate_pairs.tsv: 1732544 rows (0 empty, 1732544 non-empty).
+
+WARNING: ID-existence check is OFF (the default) — not checking that matched/candidate IDs exist in the test set. Every other rule is still checked. Re-run with --check-ids to enable it (needs test_source2/3.tsv; uses more memory). A nonexistent ID only lowers your score, never rejects your submission.
+PASS — no blocking issues found. Safe to submit.
+ 
+----- cell 12 ok in 137s
